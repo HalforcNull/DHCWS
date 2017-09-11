@@ -35,3 +35,21 @@ def about():
         year=datetime.now().year,
         message='Your application description page.'
     )
+
+@app.route('/api/test/test1', methods = ['GET'])
+def get_test1():
+    return "helloWorld" 
+
+@app.route('/demo/demomenu')
+def demoMenu():
+    """Render the demo Menu page"""
+    prelim_names = ['Carla', 'Aly', 'Ivuoma']
+    return render_template(
+        'demomenu.html',
+        title='Demo Menu',
+        year=datetime.now().year,
+        message='My Demo Menu',
+        names = prelim_names
+    )
+
+ 
