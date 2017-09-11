@@ -6,6 +6,7 @@ from datetime import datetime
 from flask import render_template
 from FlaskTestProject import app
 
+#PREMADE CODES
 @app.route('/')
 @app.route('/home')
 def home():
@@ -36,9 +37,7 @@ def about():
         message='Your application description page.'
     )
 
-@app.route('/api/test/test1', methods = ['GET'])
-def get_test1():
-    return "helloWorld" 
+#demo Section
 
 @app.route('/demo/demomenu')
 def demoMenu():
@@ -52,4 +51,12 @@ def demoMenu():
         names = prelim_names
     )
 
- 
+
+#API SECTION
+@app.route('/api/scriptdescription/<string:script_name>', methods = ['GET'])
+def get_scriptdescription(script_name):
+    return "hello put description here" 
+
+@app.route('/api/scriptsourcecode/<string:script_name>', methods = ['GET'])
+def get_scriptsourcecode(script_name):
+    return "hello put source code here"
