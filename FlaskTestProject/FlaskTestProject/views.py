@@ -51,6 +51,17 @@ def demoMenu():
         names = prelim_names
     )
 
+@app.route('/demo/tasksetup/<string:script_name>')
+def runscript(script_name):
+    scriptRequiredDataFiles = ['']
+    scriptRequiredDataInputs = ['']
+    return render_template(
+        'tasksetup.html',
+        title='Setup Task',
+        year=datetime.now().year,
+        reqFiles = scriptRequiredDataFiles,
+        reqInputs = scriptRequiredDataInputs
+    )
 
 #API SECTION
 @app.route('/api/scriptdescription/<string:script_name>', methods = ['GET'])
