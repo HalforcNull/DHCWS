@@ -7,7 +7,7 @@
 
 <!-- Need Component for file uploader and button to trigger run script -->
 {% for reqfile in reqfiles %}
-    <label>{{reqfile}}:</label> <input id="{{reqfile.index}}"
+    <label>{{reqfile}}:</label> <input id="{{reqfile.index}}" type="file" />
 {% endfor %}
 
 <!-- Script to fill data also required -->
