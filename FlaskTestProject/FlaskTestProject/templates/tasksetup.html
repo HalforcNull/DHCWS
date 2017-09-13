@@ -2,13 +2,41 @@
 
 {% block content %}
 
+
+<script src="/static/scripts/myScripts/tasksetup.js"></script>
+
 <h2>{{ title }}</h2>
 <h3>{{ message }}</h3>
 
-<!-- Need Component for file uploader and button to trigger run script -->
-{% for reqfile in reqfiles %}
-    <label>{{reqfile}}:</label> <input id="{{reqfile.index}}" type="file" />
-{% endfor %}
+<div>
+    We have assigned task:<label id="txtTaskId"> {{taskId}} </label>to you.
+    <br />
+    You have 3 days to finish the file upload and start the task.
+</div>
 
+<div class="row">
+    <!-- Need Component for file uploader and button to trigger run script -->
+    {% for reqfile in reqFiles %}
+    <form class="fileUploaderForm" method="post" enctype="multipart/form-data" action="/api/userUploadFile">
+        <label>{{reqfile}}:</label>
+        <input id="file_{{loop.index}}" name="file" type="file" />
+        <input name="file_id" value="{{loop.index}}" hidden="hidden" />
+        <input name="task_id" value="{{taskId}}" hidden="hidden" />
+        <input type="submit" value="Upload" />
+    </form>
+
+    {% endfor %}
+</div>
+
+<div class="row">
+    {% for reqfield in reqInputs %}
+    <label>{{reqfield}}:</label>
+    <input id="field_{{loop.index}}" />
+    {% endfor %}
+</div>
 <!-- Script to fill data also required -->
+
+<input type="button" onclick="SetupNewTask()" />
+
+
 {% endblock %}

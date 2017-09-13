@@ -8,8 +8,7 @@
     <ProjectHome>.</ProjectHome>
     <ProjectTypeGuids>{789894c7-04a9-4a11-a6b5-3f4435165112};{1b580a1a-fdb3-4b32-83e1-6407eb2722e6};{349c5851-65df-11da-9384-00065b846f21};{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
     <StartupFile>runserver.py</StartupFile>
-    <SearchPath>
-    </SearchPath>
+    <SearchPath>FlaskTestProject\bussinessLogic</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <LaunchProvider>Web launcher</LaunchProvider>
     <WebBrowserUrl>http://localhost</WebBrowserUrl>
@@ -27,12 +26,19 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="FlaskTestProject\bussinessLogic\FileManager.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FlaskTestProject\bussinessLogic\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="runserver.py" />
     <Compile Include="FlaskTestProject\__init__.py" />
     <Compile Include="FlaskTestProject\views.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="FlaskTestProject\" />
+    <Folder Include="FlaskTestProject\bussinessLogic\" />
     <Folder Include="FlaskTestProject\static\" />
     <Folder Include="FlaskTestProject\static\content\" />
     <Folder Include="FlaskTestProject\static\fonts\" />
@@ -42,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="FlaskTestProject\static\scripts\myScripts\demomenu.js" />
+    <Content Include="FlaskTestProject\static\scripts\myScripts\tasksetup.js" />
     <Content Include="FlaskTestProject\templates\demomenu.html" />
     <Content Include="FlaskTestProject\templates\tasksetup.html" />
     <Content Include="requirements.txt" />

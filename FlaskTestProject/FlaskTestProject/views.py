@@ -4,7 +4,10 @@ Routes and views for the flask application.
 
 from datetime import datetime
 from flask import render_template
+from flask import request
 from FlaskTestProject import app
+from FlaskTestProject.bussinessLogic import FileManager
+
 
 #PREMADE CODES
 @app.route('/')
@@ -52,12 +55,13 @@ def demoMenu():
     )
 
 @app.route('/demo/tasksetup/<string:script_name>')
-def runscript(script_name):
-    scriptRequiredDataFiles = ['']
-    scriptRequiredDataInputs = ['']
+def tasksetup(script_name):
+    scriptRequiredDataFiles = ['reqFile1', 'reqFile2', 'reqFile3']
+    scriptRequiredDataInputs = ['reqValue1', 'reqValue2', 'reqValue3']
     return render_template(
         'tasksetup.html',
         title='Setup Task',
+        taskId='1',
         year=datetime.now().year,
         reqFiles = scriptRequiredDataFiles,
         reqInputs = scriptRequiredDataInputs
@@ -66,8 +70,13 @@ def runscript(script_name):
 #API SECTION
 @app.route('/api/scriptdescription/<string:script_name>', methods = ['GET'])
 def get_scriptdescription(script_name):
-    return "hello put description here" 
+    return "put description here" 
 
 @app.route('/api/scriptsourcecode/<string:script_name>', methods = ['GET'])
 def get_scriptsourcecode(script_name):
-    return "hello put source code here"
+    return "put source code here"
+
+@app.route('/api/userUploadFile', methods=['POST'])
+def post_userUploadFile():
+    fileManager = FileManager.FileManager()
+    return fileManager.UploadFileForGivenTask(request.files['file'], request.form['task_id'], request.form['file_id'])

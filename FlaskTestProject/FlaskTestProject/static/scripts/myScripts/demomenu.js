@@ -1,7 +1,7 @@
 function UpdateScriptInfo() {
-    var selectedScriptName = document.getElementById('listAvaliableScripts').value;
-    var scriptDescriptionSection = document.getElementById('txtScriptDescription');
-    var scriptSourseCodeSection = document.getElementById('txtScriptSourceCode');
+    var selectedScriptName = $('listAvaliableScripts').value;
+    var scriptDescriptionSection = $('txtScriptDescription');
+    var scriptSourseCodeSection = $('txtScriptSourceCode');
 
     var xhttpDesc = new XMLHttpRequest();
     var xhttpSour = new XMLHttpRequest();
