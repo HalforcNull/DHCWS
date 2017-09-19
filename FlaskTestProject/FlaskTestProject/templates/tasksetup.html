@@ -17,26 +17,29 @@
 <div class="row">
     <!-- Need Component for file uploader and button to trigger run script -->
     {% for reqfile in reqFiles %}
-    <form class="fileUploaderForm" method="post" enctype="multipart/form-data" action="/api/userUploadFile">
-        <label>{{reqfile}}:</label>
+    <label>{{reqfile}}:</label>
+    <form class="fileUploaderForm" method="post" enctype="multipart/form-data" action="{{urlFileUpload}}">
         <input id="file_{{loop.index}}" name="file" type="file" />
         <input name="file_id" value="{{loop.index}}" hidden="hidden" />
         <input name="task_id" value="{{taskId}}" hidden="hidden" />
         <input type="submit" value="Upload" />
     </form>
-
     {% endfor %}
 </div>
 
+
 <div class="row">
-    {% for reqfield in reqInputs %}
-    <label>{{reqfield}}:</label>
-    <input id="field_{{loop.index}}" />
-    {% endfor %}
+    <form class="fieldInputAndTaskSubmitForm" method="post" enctype="multipart/form-data" action="{{urlTaskSubmit}}"> 
+        {% for reqfield in reqInputs %}
+        <label>{{reqfield}}:</label>
+        <input name="task_id" value="{{taskId}}" hidden="hidden" />
+        <input name="field_{{loop.index}} " />
+        {% endfor %}
+        <input type="submit" value="Submit Task" />
+    </form>
 </div>
 <!-- Script to fill data also required -->
 
-<input type="button" onclick="SetupNewTask()" />
 
 
 {% endblock %}

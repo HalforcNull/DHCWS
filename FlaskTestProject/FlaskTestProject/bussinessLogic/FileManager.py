@@ -1,12 +1,14 @@
 import os
 
-#TODO LATER: MOVE THESE PARMS INTO CONFIG?
+#TODO: MOVE THESE PARMS INTO CONFIG?
 UPLOAD_FOLDER = 'c:/FlaskTestProject/Data/user/uploadfiles/'
 ALLOWED_EXTENSIONS = set(['csv'])
 
 
 class FileManager:
     #private method
+    #this will change if we allowed more types of file
+    #allowed file types should be listed for each script in tblscripts table
     def __allowed_file(self, filename):
         return '.' in filename and \
             filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
