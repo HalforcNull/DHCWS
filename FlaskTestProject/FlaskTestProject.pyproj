@@ -30,7 +30,13 @@
     <Compile Include="FlaskTestProject\bussinessLogic\FileManager.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="FlaskTestProject\bussinessLogic\ScriptManager.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="FlaskTestProject\bussinessLogic\TaskManager.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FlaskTestProject\bussinessLogic\AccountManager.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="FlaskTestProject\bussinessLogic\__init__.py">

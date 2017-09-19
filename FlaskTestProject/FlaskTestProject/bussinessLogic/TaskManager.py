@@ -13,7 +13,6 @@ class TaskManager:
         cursor = conn.cursor()
         #try:
         args = (scriptID, userID, 0)
-        
         result_args = cursor.callproc('spCreateNewTask',args)
         #    returnedTaskID = result_args[1]
 
