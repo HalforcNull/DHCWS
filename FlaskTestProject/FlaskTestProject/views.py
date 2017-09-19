@@ -53,15 +53,15 @@ def demoMenu():
         names = prelim_names
     )
 
-@app.route('/demo/tasksetup/<string:script_name>')
-def tasksetup(script_name):
+@app.route('/demo/tasksetup/<string:script_id>')
+def tasksetup(script_id):
     tm = TaskManager.TaskManager()
     scriptRequiredDataFiles = ['reqFile1', 'reqFile2', 'reqFile3']
     scriptRequiredDataInputs = ['reqValue1', 'reqValue2', 'reqValue3']
     return render_template(
         'tasksetup.html',
         title='Setup Task',
-        taskId=tm.getNewTask(script_name, '1'),
+        taskId=tm.getNewTask(script_id, '1'),
         year=datetime.now().year,
         reqFiles = scriptRequiredDataFiles,
         reqInputs = scriptRequiredDataInputs,
