@@ -42,6 +42,12 @@
     <Compile Include="FlaskTestProject\bussinessLogic\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="FlaskTestProject\dataEntities\Script.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FlaskTestProject\dataEntities\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="runserver.py" />
     <Compile Include="FlaskTestProject\__init__.py" />
     <Compile Include="FlaskTestProject\views.py" />
@@ -49,6 +55,7 @@
   <ItemGroup>
     <Folder Include="FlaskTestProject\" />
     <Folder Include="FlaskTestProject\bussinessLogic\" />
+    <Folder Include="FlaskTestProject\dataEntities\" />
     <Folder Include="FlaskTestProject\static\" />
     <Folder Include="FlaskTestProject\static\content\" />
     <Folder Include="FlaskTestProject\static\fonts\" />
@@ -60,6 +67,7 @@
     <Content Include="FlaskTestProject\static\scripts\myScripts\demomenu.js" />
     <Content Include="FlaskTestProject\static\scripts\myScripts\tasksetup.js" />
     <Content Include="FlaskTestProject\templates\demomenu.html" />
+    <Content Include="FlaskTestProject\templates\scriptlist.html" />
     <Content Include="FlaskTestProject\templates\tasksetup.html" />
     <Content Include="requirements.txt" />
     <Content Include="FlaskTestProject\static\content\bootstrap.css" />

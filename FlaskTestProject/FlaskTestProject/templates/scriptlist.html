@@ -3,18 +3,17 @@
 
 <h2>{{ title }}.</h2>
 <h3>{{ message }}</h3>
-
-<div class="scriptList">
-    {% for scriptInfo in scriptLists}
-    <div class="scriptDetail">
-        <a class="scriptName" href="/tasksetup/{{scriptInfo.ScriptID}}">
-            {{scriptInfo.ScriptName}}
+<div class="divScriptList">
+    {% for scriptInfo in scriptList %}    
+    <div class="divScriptDetail">
+        <a class="scriptName" href="/tasksetup/{{scriptInfo.Id}}">
+            {{scriptInfo.Name}}
         </a>
-        <div class="scriptMetaData">
+        <div class="divScriptMetaData">
             <!-- not using yet, we can put tag info into this part-->
         </div>
-        <div class="scriptDescription">
-            {{scriptInfo.ScriptDescription}}
+        <div class="divScriptDescription">
+            {{scriptInfo.Description}}
         </div>
     </div>
     {% endfor %}

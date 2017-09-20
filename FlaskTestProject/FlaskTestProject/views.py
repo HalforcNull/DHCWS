@@ -6,7 +6,7 @@ from datetime import datetime
 from flask import render_template
 from flask import request
 from FlaskTestProject import app
-from FlaskTestProject.bussinessLogic import FileManager, TaskManager
+from FlaskTestProject.bussinessLogic import FileManager, TaskManager, ScriptManager
 
 
 #PREMADE CODES
@@ -41,6 +41,7 @@ def about():
     )
 
 #Demo Section
+#TOBE DELETE
 @app.route('/demo/demomenu')
 def demoMenu():
     """Render the demo Menu page"""
@@ -53,7 +54,17 @@ def demoMenu():
         names = prelim_names
     )
 
-@app.route('/demo/tasksetup/<string:script_id>')
+@app.route('/scriptlist')
+def scriptlist():
+    sm = ScriptManager.ScriptManager()
+    return render_template(
+        'scriptlist.html',
+        title='Script List',
+        message = 'This is all script now in the server, pick up one and start a new task.',
+        scriptList = sm.getScriptList()
+    )
+
+@app.route('/tasksetup/<string:script_id>')
 def tasksetup(script_id):
     tm = TaskManager.TaskManager()
     scriptRequiredDataFiles = ['reqFile1', 'reqFile2', 'reqFile3']
