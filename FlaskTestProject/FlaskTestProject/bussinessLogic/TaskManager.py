@@ -20,8 +20,20 @@ class TaskManager:
         #    print(e)
 
         #finally:
-        print(args)
-        print(result_args)
+        
         cursor.close()
+        conn.commit()
         conn.close()
         return result_args[2]
+
+    def activeTask(self, taskID):
+        conn = mysql.connector.connect( host=hostname, user=username, passwd=password, db=database )
+        cursor = conn.cursor()
+
+        args=(taskID, 0)
+        result_args = cursor.callproc('spActiveTask',args)
+        cursor.close()
+        conn.commit()
+        conn.close()
+        return result_args[1]
+

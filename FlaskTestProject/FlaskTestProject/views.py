@@ -77,12 +77,18 @@ def tasksetup(script_id):
         reqFiles = scriptRequiredDataFiles,
         reqInputs = scriptRequiredDataInputs,
         urlFileUpload = '/api/useruploadfile',
-        urlTaskSubmit = '/demo/tasksubmit')
-    
+        urlTaskSubmit = '/tasksubmit')
 
+@app.route('/tasksubmit', methods=['POST'])
+def post_taskSubmit():
+    tm = TaskManager.TaskManager()
+    resultCode = tm.activeTask(request.form['task_id'])
+    if resultCode == 1:
+        return render_template('taskactivesuccess.html')
+    else:
+        return render_template('taskactivefail.html')
 
 #API SECTION
-
 @app.route('/api/scriptdescription/<string:script_name>', methods = ['GET'])
 def get_scriptdescription(script_name):
     return "put description here" 

@@ -68,7 +68,9 @@
     <Content Include="FlaskTestProject\static\scripts\myScripts\tasksetup.js" />
     <Content Include="FlaskTestProject\templates\demomenu.html" />
     <Content Include="FlaskTestProject\templates\scriptlist.html" />
+    <Content Include="FlaskTestProject\templates\taskactivesuccess.html" />
     <Content Include="FlaskTestProject\templates\tasksetup.html" />
+    <Content Include="FlaskTestProject\templates\taskactivefail.html" />
     <Content Include="requirements.txt" />
     <Content Include="FlaskTestProject\static\content\bootstrap.css" />
     <Content Include="FlaskTestProject\static\content\bootstrap.min.css" />
