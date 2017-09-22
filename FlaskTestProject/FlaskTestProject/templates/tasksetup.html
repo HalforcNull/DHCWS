@@ -30,10 +30,10 @@
 
 <div class="row">
     <form class="fieldInputAndTaskSubmitForm" method="post" enctype="multipart/form-data" action="{{urlTaskSubmit}}"> 
+        <input name="task_id" value="{{taskId}}" hidden="hidden" />    
         {% for reqfield in reqInputs %}
         <label>{{reqfield}}:</label>
-        <input name="task_id" value="{{taskId}}" hidden="hidden" />
-        <input name="field_{{loop.index}} " />
+        <input name="field_{{loop.index}}" />
         {% endfor %}
         <input type="submit" value="Submit Task" />
     </form>

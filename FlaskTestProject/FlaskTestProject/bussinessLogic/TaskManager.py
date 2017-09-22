@@ -37,3 +37,14 @@ class TaskManager:
         conn.close()
         return result_args[1]
 
+    def updateTaskParms(self, taskId, parmValues):
+        conn = mysql.connector.connect( host=hostname, user=username, passwd=password, db=database )
+        cursor = conn.cursor()
+
+        args = (taskId, " ".join(parmValues))
+        cursor.callproc('spUpdateTaskParms',args)
+        cursor.close()
+        conn.commit()
+        conn.close()
+        return
+

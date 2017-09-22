@@ -81,7 +81,9 @@ def tasksetup(script_id):
 
 @app.route('/tasksubmit', methods=['POST'])
 def post_taskSubmit():
+    parms = (request.form['field_1'], request.form['field_2'], request.form['field_3'])
     tm = TaskManager.TaskManager()
+    tm.updateTaskParms(request.form['task_id'], parms)
     resultCode = tm.activeTask(request.form['task_id'])
     if resultCode == 1:
         return render_template('taskactivesuccess.html')
