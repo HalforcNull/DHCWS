@@ -261,3 +261,4 @@ __pycache__/
 *.pyc
 FlaskTestProject/.vscode/launch.json
 ScriptRunner/.vscode/launch.json
+.vscode/launch.json
