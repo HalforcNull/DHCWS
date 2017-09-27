@@ -1,4 +1,3 @@
-import mysql.connector
 from FlaskTestProject.dataEntities import DataAccess
 
 class TaskManager:
@@ -16,4 +15,10 @@ class TaskManager:
     def updateTaskParms(self, taskId, parmValues):
         self.DataAccess.UpdateTaskParms(taskId, parmValues)
         return
+    
+    def getFirstPendingTask(self, serverName):
+        return self.DataAccess.GetFirstPendingTask(serverName)
 
+    def checkinTask(self, serverName):
+        self.DataAccess.CheckinTask(serverName)
+        return

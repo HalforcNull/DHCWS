@@ -46,7 +46,8 @@ def checkOutNewTask():
     return ''
 
 def checkInTask():
-    url = LoadBalanceServerAddress+'/api/requestnewtask/' + SERVERNAME
+    #we may need task id later
+    url = LoadBalanceServerAddress+'/api/checkinassignedtask/' + SERVERNAME
     requests.post(url)
     return
 

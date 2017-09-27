@@ -12,7 +12,8 @@ class DataAccess:
         """ call SP based on the spname. spargs should incloud space for output args
             The returned args need to be explained by case"""
 
-        conn = mysql.connector.connect( host=self.__HOSTNAME__, user=self.__USERNAME__, passwd=self.__PASSWORD__, db=self.__DATABASE__ )
+        conn = mysql.connector.connect( host=self.__HOSTNAME__, user=self.__USERNAME__, 
+                                        passwd=self.__PASSWORD__, db=self.__DATABASE__ )
         cursor = conn.cursor()
         result_args = cursor.callproc(spname, spargs)
         cursor.close()
@@ -23,7 +24,8 @@ class DataAccess:
     def __fetchallFromStoredProcedure__(self, spname, spargs=None):
         """ Read only. """
 
-        conn = mysql.connector.connect( host=self.__HOSTNAME__, user=self.__USERNAME__, passwd=self.__PASSWORD__, db=self.__DATABASE__ )
+        conn = mysql.connector.connect( host=self.__HOSTNAME__, user=self.__USERNAME__, 
+                                        passwd=self.__PASSWORD__, db=self.__DATABASE__ )
         cursor = conn.cursor()
         if spargs is None:
             cursor.callproc(spname)
@@ -70,4 +72,9 @@ class DataAccess:
         fetchallResult = self.__fetchallFromStoredProcedure__('spGetPendingTask',args)
         for taskInfo in fetchallResult:
             return Task.Task(taskInfo[0],taskInfo[1],taskInfo[2],taskInfo[3])
+    
+    def CheckinTask(self, servername):
+        args = (servername)
+        self.__callStoredProcedure__('spCheckinTask', args)
+        return
     

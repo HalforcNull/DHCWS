@@ -89,10 +89,11 @@ def post_taskSubmit():
     tm = TaskManager.TaskManager()
     tm.updateTaskParms(request.form['task_id'], parms)
     resultCode = tm.activeTask(request.form['task_id'])
+    
     if resultCode == 1:
         return render_template('taskactivesuccess.html')
-    else:
-        return render_template('taskactivefail.html')
+    
+    return render_template('taskactivefail.html')
 
 @app.route('/testScript')
 def testRun():
@@ -112,3 +113,14 @@ def get_scriptsourcecode(script_name):
 def post_userUploadFile():
     fileManager = FileManager.FileManager()
     return fileManager.UploadFileForGivenTask(request.files['file'], request.form['task_id'], request.form['file_id'])
+
+@app.route('/api/requestnewtask/<string:server_name>', methods=['GET'])
+def get_requestNewTask(server_name):
+    taskManager = TaskManager.TaskManager()
+    return taskManager.getFirstPendingTask(server_name)
+
+@app.route('/api/checkinassignedtask/<string:server_name>', methods=['POST'])
+def post_checkinAssignedTask(server_name):
+    taskManager = TaskManager.TaskManager()
+    return taskManager.checkinTask(server_name)
+
