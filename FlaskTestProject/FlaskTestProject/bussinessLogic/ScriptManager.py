@@ -1,6 +1,6 @@
 import mysql.connector
-import dataEntities.DataAccess
 from FlaskTestProject.dataEntities import Script
+from FlaskTestProject.dataEntities import DataAccess
 import json
 
 #TODO: CONFIG 
@@ -12,7 +12,7 @@ database = 'dbo'
 class ScriptManager:
 
     def __init__(self):
-        self.DataAccess = dataEntities.DataAccess.DataAccess()
+        self.DataAccess = DataAccess.DataAccess()
         return
 
     def getScriptIDbyName(self, scriptName):

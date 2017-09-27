@@ -1,10 +1,10 @@
 import mysql.connector
-import dataEntities.DataAccess
+from FlaskTestProject.dataEntities import DataAccess
 
 class TaskManager:
 
     def __init__(self):
-        self.DataAccess = dataEntities.DataAccess.DataAccess()
+        self.DataAccess = DataAccess.DataAccess()
         return
     
     def getNewTask(self, scriptID, userID):
