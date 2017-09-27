@@ -1,5 +1,6 @@
-import time
 import subprocess
+import time
+
 import mysql.connector
 from pip._vendor import requests
 
@@ -67,4 +68,3 @@ def getBalanceServer():
     conn.commit()
     conn.close()
     return result_args[0]
-        

@@ -4,7 +4,7 @@ class Script:
     Id =''
     Description = ''
 
-    def __init__(self, id, name, description):
-        self.Id = id
+    def __init__(self, Id, name, description):
+        self.Id = Id
         self.Name = name
         self.Description = description

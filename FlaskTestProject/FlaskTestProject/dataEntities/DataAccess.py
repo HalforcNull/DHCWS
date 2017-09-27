@@ -1,5 +1,6 @@
 import  mysql.connector
 from FlaskTestProject.dataEntities import Script
+from FlaskTestProject.dataEntities import Task
 
 class DataAccess:
     __HOSTNAME__ = 'localhost'
@@ -62,3 +63,11 @@ class DataAccess:
             scriptList.append( Script.Script(scriptInfo[0], scriptInfo[1], scriptInfo[2]) )
 
         return scriptList
+
+    def GetFirstPendingTask(self, servername):
+        """ get the first pending task. if no task pending return none """
+        args = (servername)
+        fetchallResult = self.__fetchallFromStoredProcedure__('spGetPendingTask',args)
+        for taskInfo in fetchallResult:
+            return Task.Task(taskInfo[0],taskInfo[1],taskInfo[2],taskInfo[3])
+    

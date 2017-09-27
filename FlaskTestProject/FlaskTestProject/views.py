@@ -2,12 +2,14 @@
 Routes and views for the flask application.
 """
 
-from datetime import datetime
-from flask import render_template
-from flask import request
-from FlaskTestProject import app
-from FlaskTestProject.bussinessLogic import FileManager, TaskManager, ScriptManager
 import subprocess
+from datetime import datetime
+
+from flask import render_template, request
+
+from FlaskTestProject import app
+from FlaskTestProject.bussinessLogic import (FileManager, ScriptManager,
+                                             TaskManager)
 
 
 #PREMADE CODES
@@ -110,4 +112,3 @@ def get_scriptsourcecode(script_name):
 def post_userUploadFile():
     fileManager = FileManager.FileManager()
     return fileManager.UploadFileForGivenTask(request.files['file'], request.form['task_id'], request.form['file_id'])
-
