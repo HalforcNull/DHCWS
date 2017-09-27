@@ -1,4 +1,5 @@
 import  mysql.connector
+from FlaskTestProject.dataEntities import Script
 
 class DataAccess:
     __HOSTNAME__ = 'localhost'
@@ -18,6 +19,23 @@ class DataAccess:
         conn.close()
         return result_args
 
+    def __fetchallFromStoredProcedure__(self, spname, spargs=None):
+        """ Read only. """
+
+        conn = mysql.connector.connect( host=self.__HOSTNAME__, user=self.__USERNAME__, passwd=self.__PASSWORD__, db=self.__DATABASE__ )
+        cursor = conn.cursor()
+        if spargs is None:
+            cursor.callproc(spname)
+        else:
+            cursor.callproc(spname, spargs)
+
+        for result in cursor.stored_results():
+            queryResult = result.fetchall()
+
+        cursor.close()
+        conn.close()
+        return queryResult
+
     def CreateNewTask(self, scriptID, userID):
         """ create a new task for user, script need to be specified """
         args = (scriptID, userID, 0)
@@ -35,3 +53,12 @@ class DataAccess:
         args = (taskID, " ".join(parmValues))
         self.__callStoredProcedure__('spUpdateTaskParms',args)
         return
+
+    def GetSctriptList(self):
+        fetchallResult = self.__fetchallFromStoredProcedure__('spGetScriptList')
+        scriptList = []
+
+        for scriptInfo in fetchallResult:
+            scriptList.append( Script.Script(scriptInfo[0], scriptInfo[1], scriptInfo[2]) )
+
+        return scriptList
