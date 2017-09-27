@@ -40,4 +40,8 @@ def about():
 #api part
 @app.route('/api/requestnewtask/<string:serverName>', methods=['GET'])
 def reqNewTask(serverName):
-    return
+    #TODO: find the task id from DB
+    #if task id is not null
+    #build command line string
+    # return as a text
+    return 
