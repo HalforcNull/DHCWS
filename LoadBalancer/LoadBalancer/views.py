@@ -35,3 +35,9 @@ def about():
         year=datetime.now().year,
         message='Your application description page.'
     )
+
+
+#api part
+@app.route('/api/requestnewtask/<string:serverName>', methods=['GET'])
+def reqNewTask(serverName):
+    return

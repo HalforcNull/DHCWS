@@ -259,3 +259,5 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+FlaskTestProject/.vscode/launch.json
+ScriptRunner/.vscode/launch.json

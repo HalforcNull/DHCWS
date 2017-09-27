@@ -71,6 +71,7 @@
     <Content Include="FlaskTestProject\templates\taskactivesuccess.html" />
     <Content Include="FlaskTestProject\templates\tasksetup.html" />
     <Content Include="FlaskTestProject\templates\taskactivefail.html" />
+    <Content Include="FlaskTestProject\templates\testshowvalue.html" />
     <Content Include="requirements.txt" />
     <Content Include="FlaskTestProject\static\content\bootstrap.css" />
     <Content Include="FlaskTestProject\static\content\bootstrap.min.css" />

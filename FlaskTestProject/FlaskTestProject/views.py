@@ -7,6 +7,7 @@ from flask import render_template
 from flask import request
 from FlaskTestProject import app
 from FlaskTestProject.bussinessLogic import FileManager, TaskManager, ScriptManager
+import subprocess
 
 
 #PREMADE CODES
@@ -40,7 +41,7 @@ def about():
         message='Your application description page.'
     )
 
-#Demo Section
+#Pages
 #TOBE DELETE
 @app.route('/demo/demomenu')
 def demoMenu():
@@ -77,7 +78,8 @@ def tasksetup(script_id):
         reqFiles = scriptRequiredDataFiles,
         reqInputs = scriptRequiredDataInputs,
         urlFileUpload = '/api/useruploadfile',
-        urlTaskSubmit = '/tasksubmit')
+        urlTaskSubmit = '/tasksubmit'
+    )
 
 @app.route('/tasksubmit', methods=['POST'])
 def post_taskSubmit():
@@ -89,6 +91,11 @@ def post_taskSubmit():
         return render_template('taskactivesuccess.html')
     else:
         return render_template('taskactivefail.html')
+
+@app.route('/testScript')
+def testRun():
+    subprocess.call(['C:/Program Files/R/R-3.4.1/bin/RScript', 'C:/DemoScriptFolder/Sleep30s.R'], shell=False)
+    return render_template('testshowvalue.html', values=('success'))
 
 #API SECTION
 @app.route('/api/scriptdescription/<string:script_name>', methods = ['GET'])
@@ -103,3 +110,4 @@ def get_scriptsourcecode(script_name):
 def post_userUploadFile():
     fileManager = FileManager.FileManager()
     return fileManager.UploadFileForGivenTask(request.files['file'], request.form['task_id'], request.form['file_id'])
+
