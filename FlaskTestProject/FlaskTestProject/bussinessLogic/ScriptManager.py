@@ -19,12 +19,16 @@ class ScriptManager:
         #TODO
         #Do we need it????
         return 1
-
+    def getScriptExecuteablePath(self, scriptId):
+        raise NotImplementedError('getScriptExecuteablePath not impletemented yet')
     def getScriptList(self):
         return self.DataAccess.GetSctriptList()
 
     def getInputFileRequirementListbyId(self, scriptId):
         return 1
+    
+    def getInputFileListbyId(self, scriptId):
+        raise NotImplementedError('getInputFileListbyId not impletemented yet')
     def getInputParmRequirementLIstbyId(self, scriptId):
         return 1
     def getInputFileDescription(self, scriptId, fileId):

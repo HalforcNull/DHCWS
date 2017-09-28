@@ -8,7 +8,7 @@ class DataAccess:
     __PASSWORD__ = 'root'
     __DATABASE__ = 'dbo'
 
-    def __callStoredProcedure__(self, spname, spargs):
+    def __callStoredProcedure(self, spname, spargs):
         """ call SP based on the spname. spargs should incloud space for output args
             The returned args need to be explained by case"""
 
@@ -21,7 +21,7 @@ class DataAccess:
         conn.close()
         return result_args
 
-    def __fetchallFromStoredProcedure__(self, spname, spargs=None):
+    def __fetchallFromStoredProcedure(self, spname, spargs=None):
         """ Read only. """
 
         conn = mysql.connector.connect( host=self.__HOSTNAME__, user=self.__USERNAME__, 
@@ -42,23 +42,23 @@ class DataAccess:
     def CreateNewTask(self, scriptID, userID):
         """ create a new task for user, script need to be specified """
         args = (scriptID, userID, 0)
-        result = self.__callStoredProcedure__('spCreateNewTask',args)
+        result = self.__callStoredProcedure('spCreateNewTask',args)
         return result[2]
 
     def ActiveTask(self, taskID):
         """ active a task """
         args = (taskID, 0)
-        result = self.__callStoredProcedure__('spActiveTask', args)
+        result = self.__callStoredProcedure('spActiveTask', args)
         return result[1]
 
     def UpdateTaskParms(self, taskID, parmValues):
         """ update parms of a task """
         args = (taskID, " ".join(parmValues))
-        self.__callStoredProcedure__('spUpdateTaskParms',args)
+        self.__callStoredProcedure('spUpdateTaskParms',args)
         return
 
     def GetSctriptList(self):
-        fetchallResult = self.__fetchallFromStoredProcedure__('spGetScriptList')
+        fetchallResult = self.__fetchallFromStoredProcedure('spGetScriptList')
         scriptList = []
 
         for scriptInfo in fetchallResult:
@@ -68,13 +68,14 @@ class DataAccess:
 
     def GetFirstPendingTask(self, servername):
         """ get the first pending task. if no task pending return none """
-        args = (servername)
-        fetchallResult = self.__fetchallFromStoredProcedure__('spGetPendingTask',args)
+        args = (servername,)
+        fetchallResult = self.__fetchallFromStoredProcedure('spGetPendingTask',args)
+        if len(fetchallResult) < 1:
+            return None
         for taskInfo in fetchallResult:
             return Task.Task(taskInfo[0],taskInfo[1],taskInfo[2],taskInfo[3])
     
     def CheckinTask(self, servername):
-        args = (servername)
-        self.__callStoredProcedure__('spCheckinTask', args)
+        args = (servername,)
+        self.__callStoredProcedure('spCheckinTask', args)
         return
-    

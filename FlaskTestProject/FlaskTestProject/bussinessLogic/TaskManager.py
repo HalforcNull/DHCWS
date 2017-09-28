@@ -1,7 +1,6 @@
 from FlaskTestProject.dataEntities import DataAccess
 
 class TaskManager:
-
     def __init__(self):
         self.DataAccess = DataAccess.DataAccess()
         return
@@ -15,7 +14,7 @@ class TaskManager:
     def updateTaskParms(self, taskId, parmValues):
         self.DataAccess.UpdateTaskParms(taskId, parmValues)
         return
-    
+
     def getFirstPendingTask(self, serverName):
         return self.DataAccess.GetFirstPendingTask(serverName)
 

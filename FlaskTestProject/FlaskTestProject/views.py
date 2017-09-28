@@ -9,7 +9,7 @@ from flask import render_template, request
 
 from FlaskTestProject import app
 from FlaskTestProject.bussinessLogic import (FileManager, ScriptManager,
-                                             TaskManager)
+                                             TaskManager, LoadBalancer)
 
 
 #PREMADE CODES
@@ -116,8 +116,8 @@ def post_userUploadFile():
 
 @app.route('/api/requestnewtask/<string:server_name>', methods=['GET'])
 def get_requestNewTask(server_name):
-    taskManager = TaskManager.TaskManager()
-    return taskManager.getFirstPendingTask(server_name)
+    lb = LoadBalancer.LoadBalancer()
+    return lb.getPendingTaskCommand(server_name)
 
 @app.route('/api/checkinassignedtask/<string:server_name>', methods=['POST'])
 def post_checkinAssignedTask(server_name):
