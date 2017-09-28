@@ -12,28 +12,7 @@ PASSWORD = 'root'
 DATABASE = 'dbo'
 
 SLEEPINTERVAL = 30
-SERVERNAME = 'Runner 1'
-
-
-if __name__ == '__main__':
-    print('Runner start')
-    LoadBalanceServerAddress = getBalanceServer()
-    while True:
-        if LoadBalanceServerAddress == '':
-            print('no load balance server founded.')
-        time.sleep(SLEEPINTERVAL)
-
-    print('Get load balance server with ip: ' + LoadBalanceServerAddress)
-
-    while True:
-        TaskCommand = checkOutNewTask()
-        if TaskCommand != '':
-            subprocess.call(TaskCommand, shell=False)
-            checkInTask()
-            # no error handling code
-        time.sleep(SLEEPINTERVAL)
-
-
+SERVERNAME = 'Runner1'
 
 def checkOutNewTask():
     """ check if there any new task assigned to current runner"""
@@ -59,13 +38,36 @@ def regServer():
     cursor.close()
     conn.commit()
     conn.close()
+    return
 
 def getBalanceServer():
-    args = (0)
+    args = (0,0)
     conn = mysql.connector.connect( host=HOSTNAME, user=USERNAME, passwd=PASSWORD, db=DATABASE )
     cursor = conn.cursor()
-    result_args = cursor.callproc('spGetLoadBalanceServer',args)
+    result_args = cursor.callproc('spGetLoadBalancerServer',args)
     cursor.close()
     conn.commit()
     conn.close()
-    return result_args[0]
+    return 'http://'+result_args[0]+':'+result_args[1]
+
+
+if __name__ == '__main__':
+    print('Runner start')
+    LoadBalanceServerAddress = getBalanceServer()
+    while LoadBalanceServerAddress == '':
+        print('no load balance server founded.')
+        time.sleep(SLEEPINTERVAL)
+
+    print('Get load balance server with ip: ' + LoadBalanceServerAddress)
+
+    while True:
+        TaskCommand = checkOutNewTask()
+        if TaskCommand != '':
+            print('Start Command: ')
+            print(TaskCommand)
+        else:
+            print('No Task Command')
+            # subprocess.call(TaskCommand, shell=False)
+            # checkInTask()
+            # no error handling code
+        time.sleep(SLEEPINTERVAL)
