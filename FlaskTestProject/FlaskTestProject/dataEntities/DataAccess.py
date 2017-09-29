@@ -22,7 +22,6 @@ class DataAccess:
         return result_args
 
     def __fetchallFromStoredProcedure(self, spname, spargs=None):
-        """ Read only. """
 
         conn = mysql.connector.connect( host=self.__HOSTNAME__, user=self.__USERNAME__, 
                                         passwd=self.__PASSWORD__, db=self.__DATABASE__ )
@@ -36,6 +35,7 @@ class DataAccess:
             queryResult = result.fetchall()
 
         cursor.close()
+        conn.commit()
         conn.close()
         return queryResult
 

@@ -50,10 +50,23 @@ def getBalanceServer():
     conn.close()
     return 'http://'+result_args[0]+':'+result_args[1]
 
+def RunScript(cmd):
+    print('Start Command: ')
+    print(TaskCommand)
+    return
+    # subprocess.call(TaskCommand, shell=False)
+    # checkInTask()
+    # no error handling code
+
 
 if __name__ == '__main__':
     print('Runner start')
-    LoadBalanceServerAddress = getBalanceServer()
+    LoadBalanceServerAddress = ''
+    try:
+        LoadBalanceServerAddress = getBalanceServer()
+    except Exception as e:
+        print('Error occur when connecting to Database. ')
+    
     while LoadBalanceServerAddress == '':
         print('no load balance server founded.')
         time.sleep(SLEEPINTERVAL)
@@ -61,13 +74,15 @@ if __name__ == '__main__':
     print('Get load balance server with ip: ' + LoadBalanceServerAddress)
 
     while True:
-        TaskCommand = checkOutNewTask()
+        TaskCommand = ''
+        try:
+            TaskCommand = checkOutNewTask()
+        except Exception as e:
+            print('Error occur when connecting to Web Server:' + LoadBalanceServerAddress )
+
         if TaskCommand != '':
-            print('Start Command: ')
-            print(TaskCommand)
+            RunScript(TaskCommand)
         else:
             print('No Task Command')
-            # subprocess.call(TaskCommand, shell=False)
-            # checkInTask()
-            # no error handling code
+
         time.sleep(SLEEPINTERVAL)

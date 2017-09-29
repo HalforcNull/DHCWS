@@ -17,7 +17,7 @@ class TaskManager:
 
     def getFirstPendingTask(self, serverName):
         return self.DataAccess.GetFirstPendingTask(serverName)
-
+    
     def checkinTask(self, serverName):
         self.DataAccess.CheckinTask(serverName)
         return
