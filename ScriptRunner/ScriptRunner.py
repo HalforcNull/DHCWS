@@ -60,6 +60,17 @@ def RunScript(cmd):
 
 
 if __name__ == '__main__':
+    """ THIS IS NOT THE FINAL SOLUTION 
+        Command should be built in script runner.
+        All env parm should managed by script runner
+        Load Balancer only need pass script id, task id, and regular parms.
+        Script Runner need:
+        1. query task, query config
+        2. pull files into its environment (script and input file)
+        3. built the command
+        4. set task 'running' flag = true and run the command.
+        5. get result, push data back to data center/file center
+        6. check in task """
     print('Runner start')
     LoadBalanceServerAddress = ''
     try:
@@ -72,7 +83,6 @@ if __name__ == '__main__':
         time.sleep(SLEEPINTERVAL)
 
     print('Get load balance server with ip: ' + LoadBalanceServerAddress)
-
     while True:
         TaskCommand = ''
         try:

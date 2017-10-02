@@ -1,12 +1,13 @@
 import  mysql.connector
 from FlaskTestProject.dataEntities import Script
 from FlaskTestProject.dataEntities import Task
+from FlaskTestProject import app
 
 class DataAccess:
-    __HOSTNAME__ = 'localhost'
-    __USERNAME__ = 'root'
-    __PASSWORD__ = 'root'
-    __DATABASE__ = 'dbo'
+    __HOSTNAME__ = app.config['DB_HOSTNAME']
+    __USERNAME__ = app.config['DB_USERNAME']
+    __PASSWORD__ = app.config['DB_PASSWORD']
+    __DATABASE__ = app.config['DB_DATABASE']
 
     def __callStoredProcedure(self, spname, spargs):
         """ call SP based on the spname. spargs should incloud space for output args

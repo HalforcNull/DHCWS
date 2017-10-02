@@ -9,6 +9,13 @@ class TaskManager:
         return self.DataAccess.CreateNewTask(scriptID, userID)
 
     def activeTask(self, taskID):
+        """ current code is for demo only
+        the fully workflow is :
+        1. get request id
+        2. check every required files in 'input' folder
+        3. check parms ---??
+        4. active task
+        """
         return self.DataAccess.ActiveTask(taskID)
 
     def updateTaskParms(self, taskId, parmValues):
@@ -21,3 +28,4 @@ class TaskManager:
     def checkinTask(self, serverName):
         self.DataAccess.CheckinTask(serverName)
         return
+    

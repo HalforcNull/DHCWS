@@ -1,4 +1,5 @@
 import os
+from FlaskTestProject import app
 
 #TODO: MOVE THESE PARMS INTO CONFIG?
 UPLOAD_FOLDER = 'c:/FlaskTestProject/Data/user/uploadfiles/'
@@ -27,4 +28,9 @@ class FileManager:
         filename = fileId + '.' + file.filename.rsplit('.',1)[1].lower()
         file.save(directory+filename)
         return 'Success'
-            
+    
+    def GetRScriptRunningEnvPath(self):
+        raise NotImplementedError()
+
+    def GetScriptLocation(self, scriptId):
+        raise NotImplementedError()
