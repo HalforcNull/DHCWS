@@ -3,9 +3,10 @@ Routes and views for the flask application.
 """
 
 import subprocess
+import csv
 from datetime import datetime
 
-from flask import render_template, request
+from flask import render_template, request, send_file
 
 from FlaskTestProject import app
 from FlaskTestProject.bussinessLogic import (FileManager, ScriptManager,
@@ -100,6 +101,10 @@ def testRun():
     subprocess.call(['C:/Program Files/R/R-3.4.1/bin/RScript', 'C:/DemoScriptFolder/Sleep30s.R'], shell=False)
     return render_template('testshowvalue.html', values=('success'))
 
+@app.route('/taskresult')
+def taskResult():
+    return render_template('taskresult.html',taskId= 1)
+
 #API SECTION
 @app.route('/api/scriptdescription/<string:script_name>', methods = ['GET'])
 def get_scriptdescription(script_name):
@@ -123,4 +128,8 @@ def get_requestNewTask(server_name):
 def post_checkinAssignedTask(server_name):
     taskManager = TaskManager.TaskManager()
     return taskManager.checkinTask(server_name)
+
+@app.route('/api/datafile/<string:file_id>', methods=['GET'])
+def get_datafile(file_id):    
+    return send_file('C:/datas/ttttest.csv', mimetype='text/csv')
 
