@@ -129,7 +129,7 @@ def post_checkinAssignedTask(server_name):
     taskManager = TaskManager.TaskManager()
     return taskManager.checkinTask(server_name)
 
-@app.route('/api/datafile/<string:file_id>', methods=['GET'])
-def get_datafile(file_id):    
+@app.route('/api/datafile/<string:task_id>/<string:file_id>', methods=['GET'])
+def get_datafile(task_id, file_id):    
     return send_file('C:/datas/ttttest.csv', mimetype='text/csv')
 
