@@ -3,6 +3,7 @@ import time
 
 import mysql.connector
 from pip._vendor import requests
+import EnvironmentData
 
 #TODO: CONFIG
 
@@ -59,6 +60,27 @@ def RunScript(cmd):
     # no error handling code
 
 
+def getLoadBalancerServer():
+    LoadBalanceServerAddress = ''
+    try:
+        LoadBalanceServerAddress = getBalanceServer()
+    except Exception as e:
+        print('Error occur when connecting to Database. ')
+    
+    return LoadBalanceServerAddress
+    
+
+
+def envCheck():
+    envData = EnvironmentData.EnviromentData()
+    isGoodToWork = False
+    envData.LoadBalanceServerAddress = getLoadBalancerServer()
+    if envData.LoadBalanceServerAddress == '':
+        isGoodToWork = True
+    
+    envData.
+    return isGoodToWork
+
 if __name__ == '__main__':
     """ THIS IS NOT THE FINAL SOLUTION 
         Command should be built in script runner.
@@ -71,16 +93,11 @@ if __name__ == '__main__':
         4. set task 'running' flag = true and run the command.
         5. get result, push data back to data center/file center
         6. check in task """
-    print('Runner start')
+
+    print('Checking Environment')
+    EnvData = EnvironmentData.EnviromentData()
     LoadBalanceServerAddress = ''
-    try:
-        LoadBalanceServerAddress = getBalanceServer()
-    except Exception as e:
-        print('Error occur when connecting to Database. ')
-    
-    while LoadBalanceServerAddress == '':
-        print('no load balance server founded.')
-        time.sleep(SLEEPINTERVAL)
+
 
     print('Get load balance server with ip: ' + LoadBalanceServerAddress)
     while True:
@@ -94,5 +111,6 @@ if __name__ == '__main__':
             RunScript(TaskCommand)
         else:
             print('No Task Command')
+
 
         time.sleep(SLEEPINTERVAL)
