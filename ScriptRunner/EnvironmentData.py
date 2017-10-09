@@ -1,3 +1,4 @@
-class EnviromentData:
+import Config
+class EnviromentData(Config.Config):
     LoadBalanceServerAddress = ''
-    IsGood = False
+    IsGood = True
