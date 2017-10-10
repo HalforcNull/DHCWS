@@ -5,6 +5,7 @@ import mysql.connector
 from pip._vendor import requests
 import EnvironmentData
 import TaskData
+import Config
 
 #TODO: CONFIG
 
@@ -127,8 +128,7 @@ if __name__ == '__main__':
         time.sleep(ENVCHECKINTERVAL)
         EnvData = envCheck()
 
-    print 'Get load balance server with ip: ' + EnvData.LoadBalanceServerAddress
-
+    print('Get load balance server with ip: ' + EnvData.LoadBalanceServerAddress)
 
     """ THIS IS NOT THE FINAL SOLUTION 
         Command should be built in script runner.
@@ -141,39 +141,40 @@ if __name__ == '__main__':
         4. set task 'running' flag = true and run the command.
         5. get result, push data back to data center/file center
         6. check in task """
-    while True:
-        Task = queryTask(EnvData)
-        if Task is None:
-            time.sleep(TASKCHECKINTERVAL)
-            continue
-        
-        pullFilesIntoEnviroment(EnvData)
+    
+    if Config.Config().FILE_MOVE_REQUIRED
+        while True:
+            Task = queryTask(EnvData)
+            if Task is None:
+                time.sleep(TASKCHECKINTERVAL)
+                continue
+            
+            pullFilesIntoEnviroment(EnvData)
 
-        TaskCommand = buildCommand(EnvData, Task)
-        if TaskCommand == '':
-            time.sleep(TASKCHECKINTERVAL)
-            continue
-        
-        SetScriptToActive(EnvData, Task)
-        RunScript(TaskCommand)
-
-        pushResultIntoDataCenter(EnvData, Task)
-
-        checkInTask(EnvData, Task)
-
-        time.sleep(TASKCHECKINTERVAL)
-
-""" legacy approach 
-    while True:
-        TaskCommand = ''
-        try:
-            TaskCommand = checkOutNewTask(EnvData.LoadBalanceServerAddress)
-        except Exception as e:
-            print('Error occur when connecting to Web Server:' + EnvData.LoadBalanceServerAddress )
-
-        if TaskCommand != '':
+            TaskCommand = buildCommand(EnvData, Task)
+            if TaskCommand == '':
+                time.sleep(TASKCHECKINTERVAL)
+                continue
+            
+            SetScriptToActive(EnvData, Task)
             RunScript(TaskCommand)
-        else:
-            print('No Task Command')
-        
-"""
+
+            pushResultIntoDataCenter(EnvData, Task)
+
+            checkInTask(EnvData, Task)
+
+            time.sleep(TASKCHECKINTERVAL)
+
+    else:    
+        while True:
+            TaskCommand = ''
+            try:
+                TaskCommand = checkOutNewTask(EnvData.LoadBalanceServerAddress)
+            except Exception as e:
+                print('Error occur when connecting to Web Server:' + EnvData.LoadBalanceServerAddress )
+
+            if TaskCommand != '':
+                RunScript(TaskCommand)
+            else:
+                print('No Task Command')
+            
