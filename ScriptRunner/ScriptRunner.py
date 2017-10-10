@@ -79,7 +79,6 @@ def envCheck():
 
 def queryTask(envData):
     raise NotImplementedError()
-    return
 
 def pullFilesIntoEnviroment(envData):
     """not this time"""
@@ -96,9 +95,9 @@ def buildCommand(envData, taskData):
 
 
 def RMarkdownCommandGenerater(envData, taskData):
-    return envData.R_EXE_PATH + ' -e "rmarkdown::render(\'' + envData.Script_PATH +
-            taskData.ScriptId + '.rmd, output_file=\''+ result.html + '\')" ' + 
-            '--args --inputfolder=\'
+    return envData.R_EXE_PATH + ' -e "rmarkdown::render(\'' + envData.Script_PATH + \
+            taskData.ScriptId + '.rmd, output_file=\'result.html\')" ' + \
+            '--args --inputfolder=\''
 
 def RScriptCommandGenerater(envData, taskData):
     raise NotImplementedError()
@@ -128,7 +127,7 @@ if __name__ == '__main__':
         time.sleep(ENVCHECKINTERVAL)
         EnvData = envCheck()
 
-    print('Get load balance server with ip: ' + EnvData.LoadBalanceServerAddress)
+    print 'Get load balance server with ip: ' + EnvData.LoadBalanceServerAddress
 
 
     """ THIS IS NOT THE FINAL SOLUTION 
@@ -163,6 +162,7 @@ if __name__ == '__main__':
         checkInTask(EnvData, Task)
 
         time.sleep(TASKCHECKINTERVAL)
+
 """ legacy approach 
     while True:
         TaskCommand = ''
