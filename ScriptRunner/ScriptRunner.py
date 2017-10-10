@@ -142,7 +142,8 @@ if __name__ == '__main__':
         5. get result, push data back to data center/file center
         6. check in task """
     
-    if Config.Config().FILE_MOVE_REQUIRED
+    #if Config.Config().FILE_MOVE_REQUIRED
+    if False:
         while True:
             Task = queryTask(EnvData)
             if Task is None:
@@ -164,7 +165,6 @@ if __name__ == '__main__':
             checkInTask(EnvData, Task)
 
             time.sleep(TASKCHECKINTERVAL)
-
     else:    
         while True:
             TaskCommand = ''
