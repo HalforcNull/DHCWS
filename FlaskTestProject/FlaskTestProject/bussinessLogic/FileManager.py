@@ -2,8 +2,9 @@ import os
 from FlaskTestProject import app
 
 #TODO: MOVE THESE PARMS INTO CONFIG?
-UPLOAD_FOLDER = 'c:/FlaskTestProject/Data/user/uploadfiles/'
-ALLOWED_EXTENSIONS = set(['csv'])
+UPLOAD_FOLDER = app.config['ENV_FILE_UPLOAD_FOLDER']
+OUTPUT_FILE_PATH = app.config['ENV_OUTPUT_FILE_PATH']
+ALLOWED_EXTENSIONS = app.config['CONFIG_ALLOWED_EXTENSIONS']
 
 
 class FileManager:
@@ -34,4 +35,7 @@ class FileManager:
 
     def GetScriptLocation(self, scriptId):
         raise NotImplementedError()
-        
+    
+    def GetResults(self, taskId):
+        return os.listdir(path=OUTPUT_FILE_PATH + taskId +'/')
+    

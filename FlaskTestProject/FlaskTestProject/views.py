@@ -101,9 +101,13 @@ def testRun():
     subprocess.call(['C:/Program Files/R/R-3.4.1/bin/RScript', 'C:/DemoScriptFolder/Sleep30s.R'], shell=False)
     return render_template('testshowvalue.html', values=('success'))
 
-@app.route('/taskresult')
-def taskResult():
-    return render_template('taskresult.html',taskId= 1)
+@app.route('/taskresult/<string:task_id>')
+def taskResult(task_id):
+    taskManager = TaskManager.TaskManager()
+    if taskManager.taskContainsHtmlResult(task_id):
+        return render_template('taskresult.html',taskId= task_id, htmlLink=, framehidden='false')
+    else:
+        return render_template('taskresult.html', taksId = task_id, htmlLink='', framehidden='true')
 
 #API SECTION
 @app.route('/api/scriptdescription/<string:script_name>', methods = ['GET'])

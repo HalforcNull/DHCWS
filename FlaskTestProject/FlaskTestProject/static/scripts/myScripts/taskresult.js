@@ -15,13 +15,11 @@ function loadPlotlyResult(task_id, file_id){
     {
         if(error) return console.warn(error);
 
-        /*xArray = Array.apply(null, {length: 1000}).map(Number.call, Number);
-        yArray = data;*/
         xArray = data.map(function(data){return data['x']});
         yArray = data.map(function(data){return data['y']});
         plotData = {x:xArray, y:yArray};
         t = [plotData];
-        //Plotly.plot(mydiv, t);
+
         Plotly.plot(mydiv,t);
     });
     

@@ -1,4 +1,5 @@
 from FlaskTestProject.dataEntities import DataAccess
+from FlaskTestProject.bussinessLogic import FileManager
 
 class TaskManager:
     def __init__(self):
@@ -28,4 +29,12 @@ class TaskManager:
     def checkinTask(self, serverName):
         self.DataAccess.CheckinTask(serverName)
         return
+    
+    def taskContainsHtmlResult(self, taskId):
+        filemanager = FileManager.FileManager()
+        fileList = filemanager.GetResults(taskId)
+        for filename in fileList:
+            if '.' in filename and filename.rsplit('.', 1)[1].lower() == 'html':
+                return True
+        return False
     
