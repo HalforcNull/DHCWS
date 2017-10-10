@@ -39,3 +39,10 @@ class FileManager:
     def GetResults(self, taskId):
         return os.listdir(path=OUTPUT_FILE_PATH + taskId +'/')
     
+    def GetResultFileDirectory(self, taskId, fileId):
+        fl = self.GetResults(taskId)
+        for filename in fl:
+            if fileId in filename:
+                return OUTPUT_FILE_PATH + taskId + '/' + filename
+        return None
+    
