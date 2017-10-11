@@ -33,8 +33,15 @@ class TaskManager:
     def taskContainsHtmlResult(self, taskId):
         filemanager = FileManager.FileManager()
         fileList = filemanager.GetResults(taskId)
+        if fileList is None:
+            return False
+
         for filename in fileList:
             if '.' in filename and filename.rsplit('.', 1)[1].lower() == 'html':
                 return True
-        return False
-    
+        
+    def GetResultList(self, taskId):
+        filemanager = FileManager.FileManager()
+        fileList = filemanager.GetResults(taskId)
+        return fileList 
+

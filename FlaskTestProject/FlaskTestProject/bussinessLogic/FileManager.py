@@ -37,12 +37,20 @@ class FileManager:
         raise NotImplementedError()
     
     def GetResults(self, taskId):
-        return os.listdir(path=OUTPUT_FILE_PATH + taskId +'/')
+        try:
+            rList = os.listdir(path=OUTPUT_FILE_PATH + taskId +'/')
+            return rList
+        except Exception:
+            return None
     
     def GetResultFileDirectory(self, taskId, fileId):
         fl = self.GetResults(taskId)
+        if fl is None:
+            return None
+
         for filename in fl:
             if fileId in filename:
                 return OUTPUT_FILE_PATH + taskId + '/' + filename
-        return None
     
+    def GetType(self, filepath):
+        return filepath.rsplit('.', 1)[1].lower()

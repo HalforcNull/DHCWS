@@ -10,4 +10,4 @@ class Config(object):
     ENV_INPUT_FILE_PATH = 'C:/DemoWorkingFolder/Inputs/'
     ENV_OUTPUT_FILE_PATH = 'C:/DemoWorkingFolder/Outputs/'
     CONFIG_ALLOWED_EXTENSIONS = set(['csv'])
-    ENV_FILE_UPLOAD_FOLDER = 'C:/FlaskTestProject/Data/user/uploadfiles/'
+    ENV_FILE_UPLOAD_FOLDER = 'C:/DemoWorkingFolder/Inputs/'
