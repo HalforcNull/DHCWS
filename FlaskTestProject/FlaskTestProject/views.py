@@ -105,7 +105,7 @@ def testRun():
 def taskResult(task_id):
     taskManager = TaskManager.TaskManager()
     if taskManager.taskContainsHtmlResult(task_id):
-        return render_template('taskresult.html', taskId = task_id, htmlLink='', framehidden='false')
+        return render_template('taskresult.html',taskId = task_id, htmlLink='/api/datafile/'+task_id+'/0', framehidden='false')
     else:
         return render_template('taskresult.html', taksId = task_id, htmlLink='', framehidden='true')
 
@@ -134,10 +134,6 @@ def post_checkinAssignedTask(server_name):
     return taskManager.checkinTask(server_name)
 
 @app.route('/api/datafile/<string:task_id>/<string:file_id>', methods=['GET'])
-def get_datafile(task_id, file_id):
-    fileManager = FileManager.FileManager()
-    filePath = fileManager.GetResultFileDirectory(task_id, file_id)
-    if filePath is None:
-        return 'Result File Not Found'
-    return send_file(filePath, mimetype='text/csv')
+def get_datafile(task_id, file_id):    
+    return send_file('C:/datas/ttttest.csv', mimetype='text/csv')
 
