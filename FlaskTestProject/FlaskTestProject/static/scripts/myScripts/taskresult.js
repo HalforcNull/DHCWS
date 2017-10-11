@@ -11,7 +11,7 @@ $(document).ready(function () {/*
 
 function loadPlotlyResult(task_id, file_id){
     mydiv = document.getElementById('result1');
-    Plotly.d3.csv("/api/datafile/1/1", function(error,data)
+    Plotly.d3.csv("/api/datafile/"+task_id+ "/" + file_id, function(error,data)
     {
         if(error) return console.warn(error);
 

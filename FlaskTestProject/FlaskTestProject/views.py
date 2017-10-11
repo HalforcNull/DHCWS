@@ -134,6 +134,9 @@ def post_checkinAssignedTask(server_name):
     return taskManager.checkinTask(server_name)
 
 @app.route('/api/datafile/<string:task_id>/<string:file_id>', methods=['GET'])
-def get_datafile(task_id, file_id):    
-    return send_file('C:/datas/ttttest.csv', mimetype='text/csv')
-
+def get_datafile(task_id, file_id):
+    fileManager = FileManager.FileManager()
+    filePath = fileManager.GetResultFileDirectory(task_id, file_id)
+    if filePath is None:
+        return 'Result File Not Found'
+    return send_file(filePath, mimetype='text/csv')
