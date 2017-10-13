@@ -28,7 +28,6 @@ CREATE TABLE `tblscripts` (
   `ScriptID` int(11) NOT NULL AUTO_INCREMENT,
   `ScriptName` varchar(45) NOT NULL,
   `ScriptDescription` varchar(45) DEFAULT NULL,
-  `ScriptSavedPath` varchar(45) NOT NULL,
   `UserFileUploadCount` int(11) NOT NULL DEFAULT '0',
   `UserInputCount` int(11) NOT NULL DEFAULT '0',
   `File1Name` varchar(45) DEFAULT NULL,
@@ -54,7 +53,7 @@ CREATE TABLE `tblscripts` (
 
 LOCK TABLES `tblscripts` WRITE;
 /*!40000 ALTER TABLE `tblscripts` DISABLE KEYS */;
-INSERT INTO `tblscripts` VALUES (1,'DemoScript1',NULL,'C:/DemoScriptFolder/1.R',0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(2,'DemoScript2',NULL,'C:/DemoScriptFolder/2.R',1,0,'Matrix',NULL,'The Matix you want add 1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(3,'DemoScript3',NULL,'C:/DemoScriptFolder/3.R',1,1,'Matrix',NULL,'The Matix you want modified',NULL,NULL,NULL,'Value','the change of each cell',NULL,NULL,NULL,NULL),(4,'R notebook on DESeq2',NULL,'C:/DemoScriptFolder/R notebook on DESeq2.Rmd',1,0,'GSVFile',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `tblscripts` VALUES (1,'DemoScript1','Sleep 30s',0,0,NULL,NULL,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(2,'DemoScript2','Add matrix by 1',1,0,'Matrix',NULL,'The Matix you want add 1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(3,'DemoScript3','Add matrix by user defined value',1,1,'Matrix',NULL,'The Matix you want modified',NULL,NULL,NULL,'Value','the change of each cell',NULL,NULL,NULL,NULL),(4,'R notebook on DESeq2','A modified version of R notebook',1,0,'GSVFile',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `tblscripts` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -67,4 +66,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-10-10 17:46:25
+-- Dump completed on 2017-10-13 16:04:01

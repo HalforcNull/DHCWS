@@ -43,7 +43,7 @@ CREATE TABLE `tblserverregister` (
 
 LOCK TABLES `tblserverregister` WRITE;
 /*!40000 ALTER TABLE `tblserverregister` DISABLE KEYS */;
-INSERT INTO `tblserverregister` VALUES (1,'WebServer','localhost','5555','FN',1,'2017-10-03 09:13:21');
+INSERT INTO `tblserverregister` VALUES (1,'WebServer','localhost','5555','FN',1,'2017-10-13 16:01:44');
 /*!40000 ALTER TABLE `tblserverregister` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-10-10 17:46:25
+-- Dump completed on 2017-10-13 16:04:01

@@ -1,5 +1,5 @@
 from FlaskTestProject.bussinessLogic import ( TaskManager, ScriptManager, FileManager )
-from FlaskTestProject.dataEntities import Task
+from FlaskTestProject.dataEntities import ( Task, DataAccess )
 from FlaskTestProject import app
 
 
@@ -7,6 +7,18 @@ class LoadBalancer:
     def __init__(self):
         self.TaskManager = TaskManager.TaskManager()
         self.FileManager = FileManager.FileManager()
+        self.DataAccess = DataAccess.DataAccess()
+
+    def __assignNewTaskToServer(self, serverName):
+        self.DataAccess.AssignMostOldUnsignedTask(serverName)
+        return
+
+    def __getInputParms(self, taskId, scriptId, taskParms):
+        
+        InputPath = app.config['ENV_INPUT_FILE_PATH'] + taskId
+        #filesParm = InputPath.join( ScriptManager.ScriptManager.getInputFileListbyId(taskId, scriptId) )
+        
+        return InputPath + ' ' + taskParms
 
 
     def getPendingTaskCommand(self, serverName):
@@ -25,8 +37,15 @@ class LoadBalancer:
 
         PendingTask = self.TaskManager.getFirstPendingTask(serverName)
         if PendingTask is None:
+            self.__assignNewTaskToServer(serverName)
+        
+        PendingTask = self.TaskManager.getFirstPendingTask(serverName)
+        if PendingTask is None:
             return ''
         
+        if PendingTask.Parm is None:
+            PendingTask.Parm = ''
+
         CommandString = ' '.join((
             self.FileManager.GetRScriptRunningEnvPath(),
             self.FileManager.GetScriptLocation(PendingTask.ScriptId),
@@ -39,12 +58,6 @@ class LoadBalancer:
         # CommandString = ' '.Join( (Config.GetRScriptPath(),) + ( ScriptManager.getScriptExecuteablePath(PendingTask.ScriptId),) + execParms )
         return CommandString
 
-    def __getInputParms(self, taskId, scriptId, taskParms):
-        
-        InputPath = WORKINGPATH + taskId + INPUTSUBPATH
-        filesParm = InputPath.join( ScriptManager.ScriptManager.getInputFileListbyId(taskId, scriptId) )
-        
-        if filesParm == '':
-            return taskParms
-        else:
-            return filesParm + ' ' + taskParms
+
+
+

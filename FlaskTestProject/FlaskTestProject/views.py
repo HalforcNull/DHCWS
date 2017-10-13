@@ -136,7 +136,8 @@ def get_requestNewTask(server_name):
 @app.route('/api/checkinassignedtask/<string:server_name>', methods=['POST'])
 def post_checkinAssignedTask(server_name):
     taskManager = TaskManager.TaskManager()
-    return taskManager.checkinTask(server_name)
+    taskManager.checkinTask(server_name)
+    return 'success'
 
 @app.route('/api/datafile/<string:task_id>/<string:file_id>', methods=['GET'])
 def get_datafile(task_id, file_id):

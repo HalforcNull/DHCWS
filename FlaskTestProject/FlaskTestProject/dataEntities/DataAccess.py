@@ -80,3 +80,9 @@ class DataAccess:
         args = (servername,)
         self.__callStoredProcedure('spCheckinTask', args)
         return
+
+    def AssignMostOldUnsignedTask(self, servername):
+        """ this is not the correct way, demo only """
+        args = (servername,)
+        self.__callStoredProcedure('spDemoOnlyAssignTask', args)
+        return

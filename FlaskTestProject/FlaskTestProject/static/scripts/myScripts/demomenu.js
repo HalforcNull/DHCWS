@@ -17,3 +17,8 @@ function UpdateScriptInfo() {
     scriptDescriptionSection.value = xhttpDesc.responseText;
     scriptSourseCodeSection.value = xhttpSour.responseText;
 }
+
+
+function NavigateToSelectedScript(){
+    var selectedScriptName = $('listAvaliableScripts').value;
+}

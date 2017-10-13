@@ -18,6 +18,10 @@ USE `dbo`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Dumping events for database 'dbo'
+--
+
+--
 -- Dumping routines for database 'dbo'
 --
 /*!50003 DROP PROCEDURE IF EXISTS `spActiveTask` */;
@@ -58,8 +62,8 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spCheckinTask`(IN ServerName varchar(45))
 BEGIN
-	Select @tid := TaskId from tblTasks Where AssignedServerName = ServerName and IsAssigned = true and IsFinished = false;
-    Update tblTasks Set IsFinished = TRUE, FinishTime = now() WHERE TaskId = @tid;
+	Select @tid := TaskId from tblTasks Where AssignedServerName = ServerName and IsRunning = true and IsFinished = false;
+    Update tblTasks Set IsFinished = TRUE, IsRunning = false, FinishTime = now() WHERE TaskId = @tid;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -81,6 +85,26 @@ BEGIN
 	INSERT INTO tbltasks( ScriptID, UserID) 
     VALUES( _ScriptID, _UserID);
     SET newTaskIndex := LAST_INSERT_ID();
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spDemoOnlyAssignTask` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spDemoOnlyAssignTask`(IN ServerName varchar(45))
+BEGIN
+	Select @tid := TaskId from tblTasks Where IsActive = true and IsAssigned = false limit 1;
+    Update tblTasks Set IsAssigned = TRUE, AssignTime = now(), AssignedServerName = ServerName WHERE TaskId = @tid;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -206,4 +230,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-10-10 17:46:26
+-- Dump completed on 2017-10-13 16:04:02
