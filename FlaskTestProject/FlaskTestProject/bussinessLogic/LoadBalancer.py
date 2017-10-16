@@ -13,13 +13,13 @@ class LoadBalancer:
         self.DataAccess.AssignMostOldUnsignedTask(serverName)
         return
 
+    """
     def __getInputParms(self, taskId, scriptId, taskParms):
-        
         InputPath = app.config['ENV_INPUT_FILE_PATH'] + taskId
         #filesParm = InputPath.join( ScriptManager.ScriptManager.getInputFileListbyId(taskId, scriptId) )
         
         return InputPath + ' ' + taskParms
-
+    """
 
     def getPendingTaskCommand(self, serverName):
         """ THIS IS NOT THE FINAL SOLUTION 
@@ -46,10 +46,22 @@ class LoadBalancer:
         if PendingTask.Parm is None:
             PendingTask.Parm = ''
 
-        CommandString = ' '.join((
-            self.FileManager.GetRScriptRunningEnvPath(),
-            self.FileManager.GetScriptLocation(PendingTask.ScriptId),
-            PendingTask.Parm))
+        scriptfile = self.FileManager.GetScriptLocation(PendingTask.ScriptId)
+        if self.FileManager.GetType(scriptfile) == 'r':    
+            CommandString = ' '.join((
+                self.FileManager.GetRScriptRunningEnvPath(),
+                self.FileManager.GetScriptLocation(PendingTask.ScriptId),
+                PendingTask.Parm))
+        else:
+            CommandString = ' '.join((
+                self.FileManager.GetRExeRunningEnvPath(),
+                '-e',
+                '"rmarkdown::render(\'' + self.FileManager.GetScriptLocation(PendingTask.ScriptId) + 
+                    '\', output_file=\'' + self.FileManager.GetTaskOutputFolder(PendingTask.TaskId) + '0.html\')"',
+                '--args',
+                '--inputFolder="' + self.FileManager.GetTaskInputFolder(PendingTask.TaskId) + '"',
+                '--outputFolder="' + self.FileManager.GetTaskOutputFolder(PendingTask.TaskId) + '"'
+            ))
         #+ WORKINGPATH+PendingTask.TaskId+OUTPUTSUBPATH + ' '
         # work output path is the first parm of any script
         #+ WORKINGPATH+PendingTask.TaskId+OUTPUTSUBPATH + PendingTask.

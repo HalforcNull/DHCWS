@@ -31,6 +31,15 @@ class FileManager:
     def GetRScriptRunningEnvPath(self):
         # we only support R now
         return app.config['ENV_RSCRIPT_RUNNING_ENV_PATH']
+    
+    def GetRExeRunningEnvPath(self):
+        return app.config['ENV_REXE_ENV_PATH']
+
+    def GetTaskInputFolder(self, taskId):
+        return app.config['ENV_INPUT_FILE_PATH'] + str(taskId) + '/'
+
+    def GetTaskOutputFolder(self, taskId):
+        return app.config['ENV_OUTPUT_FILE_PATH'] + str(taskId) + '/'
 
     def GetScriptLocation(self, scriptId):
         slist = os.listdir( app.config['ENV_SCRIPTFOLDER'] )

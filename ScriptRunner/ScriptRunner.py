@@ -98,7 +98,7 @@ def buildCommand(envData, taskData):
 
 def RMarkdownCommandGenerater(envData, taskData):
     return envData.R_EXE_PATH + ' -e "rmarkdown::render(\'' + envData.Script_PATH + \
-            taskData.ScriptId + '.rmd, output_file=\'result.html\')" ' + \
+            taskData.ScriptId + '.rmd, output_file=\'0.html\')" ' + \
             '--args --inputfolder=\''
 
 def RScriptCommandGenerater(envData, taskData):

@@ -6,6 +6,7 @@ class Config(object):
     DB_PASSWORD = 'root'
     DB_DATABASE = 'dbo'
     ENV_RSCRIPT_RUNNING_ENV_PATH = 'C:/Program Files/R/R-3.4.1/bin/RScript.exe'
+    ENV_REXE_ENV_PATH = 'C:/Program Files/R/R-3.4.1/bin/R.exe'
     ENV_SCRIPTFOLDER = 'C:/DemoScriptFolder/'
     ENV_INPUT_FILE_PATH = 'C:/DemoWorkingFolder/Inputs/'
     ENV_OUTPUT_FILE_PATH = 'C:/DemoWorkingFolder/Outputs/'
