@@ -51,6 +51,8 @@ class LoadBalancer:
             CommandString = ' '.join((
                 self.FileManager.GetRScriptRunningEnvPath(),
                 self.FileManager.GetScriptLocation(PendingTask.ScriptId),
+                self.FileManager.GetTaskInputFolder(PendingTask.TaskId),
+                self.FileManager.GetTaskOutputFolder(PendingTask.TaskId),
                 PendingTask.Parm))
         else:
             CommandString = ' '.join((

@@ -105,6 +105,8 @@ def testRun():
 def taskResult(task_id):
     taskManager = TaskManager.TaskManager()
     resultList = taskManager.GetResultList(task_id)
+    if resultList is None:
+        resultList = ''
     if taskManager.taskContainsHtmlResult(task_id):
         return render_template('taskresult.html',taskId = task_id, resultList = resultList[:-1], htmlLink='/api/datafile/'+task_id+'/0', framehidden=False)
     else:
