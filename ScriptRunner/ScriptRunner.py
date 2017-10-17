@@ -14,7 +14,7 @@ USERNAME = 'root'
 PASSWORD = 'root'
 DATABASE = 'dbo'
 
-TASKCHECKINTERVAL = 30
+TASKCHECKINTERVAL = 6
 ENVCHECKINTERVAL = 30
 SERVERNAME = 'Runner1'
 
@@ -49,11 +49,12 @@ def getBalanceServer():
     return 'http://'+result_args[0]+':'+result_args[1]
 
 def RunScript(cmd):
-    # should set task to running =
+    ## should set task to running 
+    ## it is now done in stored proc
     print('Start Command: ')
     print(TaskCommand)
-    return
-    # subprocess.call(TaskCommand, shell=False)
+    # return
+    subprocess.call(TaskCommand, shell=False)
     # checkInTask()
     # no error handling code
 
@@ -97,7 +98,7 @@ def buildCommand(envData, taskData):
 
 def RMarkdownCommandGenerater(envData, taskData):
     return envData.R_EXE_PATH + ' -e "rmarkdown::render(\'' + envData.Script_PATH + \
-            taskData.ScriptId + '.rmd, output_file=\'result.html\')" ' + \
+            taskData.ScriptId + '.rmd, output_file=\'0.html\')" ' + \
             '--args --inputfolder=\''
 
 def RScriptCommandGenerater(envData, taskData):
@@ -175,6 +176,10 @@ if __name__ == '__main__':
 
             if TaskCommand != '':
                 RunScript(TaskCommand)
+                checkInTask(EnvData, 1)
             else:
                 print('No Task Command')
             
+            time.sleep(TASKCHECKINTERVAL)
+            
+

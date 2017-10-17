@@ -1,11 +1,9 @@
 import os
 from FlaskTestProject import app
 
-#TODO: MOVE THESE PARMS INTO CONFIG?
 UPLOAD_FOLDER = app.config['ENV_FILE_UPLOAD_FOLDER']
 OUTPUT_FILE_PATH = app.config['ENV_OUTPUT_FILE_PATH']
 ALLOWED_EXTENSIONS = app.config['CONFIG_ALLOWED_EXTENSIONS']
-
 
 class FileManager:
     #private method
@@ -31,11 +29,42 @@ class FileManager:
         return 'Success'
     
     def GetRScriptRunningEnvPath(self):
-        raise NotImplementedError()
+        # we only support R now
+        return app.config['ENV_RSCRIPT_RUNNING_ENV_PATH']
+    
+    def GetRExeRunningEnvPath(self):
+        return app.config['ENV_REXE_ENV_PATH']
+
+    def GetTaskInputFolder(self, taskId):
+        return app.config['ENV_INPUT_FILE_PATH'] + str(taskId) + '/'
+
+    def GetTaskOutputFolder(self, taskId):
+        return app.config['ENV_OUTPUT_FILE_PATH'] + str(taskId) + '/'
 
     def GetScriptLocation(self, scriptId):
-        raise NotImplementedError()
+        slist = os.listdir( app.config['ENV_SCRIPTFOLDER'] )
+        for scriptFileName in slist:
+            if scriptFileName.rsplit('.',1)[0].lower() == str(scriptId):
+                return app.config['ENV_SCRIPTFOLDER'] + scriptFileName
+        raise FileNotFoundError()
+        
     
     def GetResults(self, taskId):
-        return os.listdir(path=OUTPUT_FILE_PATH + taskId +'/')
+        try:
+            rList = os.listdir(path=OUTPUT_FILE_PATH + taskId +'/')
+            return rList
+        except Exception:
+            return None
+    
+    def GetResultFileDirectory(self, taskId, fileId):
+        fl = self.GetResults(taskId)
+        if fl is None:
+            return None
+
+        for filename in fl:
+            if fileId in filename:
+                return OUTPUT_FILE_PATH + taskId + '/' + filename
+    
+    def GetType(self, filepath):
+        return filepath.rsplit('.', 1)[1].lower()
     

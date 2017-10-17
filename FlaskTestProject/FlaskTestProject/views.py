@@ -104,10 +104,17 @@ def testRun():
 @app.route('/taskresult/<string:task_id>')
 def taskResult(task_id):
     taskManager = TaskManager.TaskManager()
+    resultList = taskManager.GetResultList(task_id)
+    if resultList is None:
+        resultList = ''
     if taskManager.taskContainsHtmlResult(task_id):
-        return render_template('taskresult.html',taskId= task_id, htmlLink=, framehidden='false')
+        return render_template('taskresult.html',taskId = task_id, resultList = resultList[:-1], htmlLink='/api/datafile/'+task_id+'/0', framehidden=False)
     else:
-        return render_template('taskresult.html', taksId = task_id, htmlLink='', framehidden='true')
+        return render_template('taskresult.html', taskId = task_id, resultList = resultList, htmlLink='', framehidden=True)
+@app.route('/taskresult_htmlview/<string:task_id>')
+def taskresult_htmlview(task_id):
+    return
+
 
 #API SECTION
 @app.route('/api/scriptdescription/<string:script_name>', methods = ['GET'])
@@ -131,9 +138,15 @@ def get_requestNewTask(server_name):
 @app.route('/api/checkinassignedtask/<string:server_name>', methods=['POST'])
 def post_checkinAssignedTask(server_name):
     taskManager = TaskManager.TaskManager()
-    return taskManager.checkinTask(server_name)
+    taskManager.checkinTask(server_name)
+    return 'success'
 
 @app.route('/api/datafile/<string:task_id>/<string:file_id>', methods=['GET'])
-def get_datafile(task_id, file_id):    
-    return send_file('C:/datas/ttttest.csv', mimetype='text/csv')
-
+def get_datafile(task_id, file_id):
+    fileManager = FileManager.FileManager()
+    filePath = fileManager.GetResultFileDirectory(task_id, file_id)
+    if filePath is None:
+        return 'Result File Not Found'
+    if fileManager.GetType(filePath) == 'html':
+        return send_file(filePath, mimetype='text/html')
+    return send_file(filePath, mimetype='text/csv')

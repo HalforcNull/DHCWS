@@ -1,17 +1,29 @@
-$(document).ready(function () {/*
-    mydiv = document.getElementById('result1');
-    data = {x:[1,2,3,4,5,6,7,8,9,10],
-            y:[1,2,1,2,1,2,1,2,1,2]};
-    t = [data];
-    Plotly.plot(mydiv, t);
-*/
+$(document).ready(function () {
+    idDiv = document.getElementById('task_id');
+    task_id = idDiv.value; 
+    for( lpIndex = 1; lpIndex < 4; lpIndex++)
+    {
+        mydiv = document.getElementById('result'+ '_' + lpIndex);
 
-    loadPlotlyResult(1,1);
-})
+        if( !loadPlotlyResult(task_id, lpIndex,mydiv ) )
+        { break; }
+    }
+    
+    // mydiv = document.getElementById('result'+ '_' + 1);
+    // loadPlotlyResult(1,1, mydiv);
+    // mydiv = document.getElementById('result'+ '_' + 2);
+    // loadPlotlyResult(1,2,mydiv);
+    return;
+});
 
-function loadPlotlyResult(task_id, file_id){
-    mydiv = document.getElementById('result1');
-    Plotly.d3.csv("/api/datafile/1/1", function(error,data)
+function loadPlotlyResult(task_id, file_id, mydiv){
+    if(mydiv == null || mydiv == undefined)
+    {
+        return false;
+    }
+    mydiv.value = 'Data Load Error';
+
+    Plotly.d3.csv("/api/datafile/"+task_id+ "/" + file_id, function(error,data)
     {
         if(error) return console.warn(error);
 
@@ -23,4 +35,5 @@ function loadPlotlyResult(task_id, file_id){
         Plotly.plot(mydiv,t);
     });
     
+    return true;
 }
