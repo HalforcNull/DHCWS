@@ -1,9 +1,12 @@
 from FlaskTestProject.dataEntities import DataAccess
 from FlaskTestProject.bussinessLogic import FileManager
+from FlaskTestProject import DesignPatterns
 
-class TaskManager:
+class TaskManager(DesignPatterns.Singleton):
+    DataAccess = None
     def __init__(self):
-        self.DataAccess = DataAccess.DataAccess()
+        if self.DataAccess is None:
+            self.DataAccess = DataAccess.DataAccess()
         return
     
     def getNewTask(self, scriptID, userID):
