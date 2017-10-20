@@ -1,7 +1,9 @@
 import mysql.connector
 from FlaskTestProject.dataEntities import Script
 from FlaskTestProject.dataEntities import DataAccess
+from FlaskTestProject import DesignPatterns
 import json
+
 
 #TODO: CONFIG 
 hostname = 'localhost'
@@ -9,7 +11,7 @@ username = 'root'
 password = 'root'
 database = 'dbo'
 
-class ScriptManager:
+class ScriptManager(DesignPatterns.Singleton):
 
     def __init__(self):
         self.DataAccess = DataAccess.DataAccess()
