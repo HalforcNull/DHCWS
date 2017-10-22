@@ -1,4 +1,4 @@
-class Task:
+class Task(object):
     TaskId = ''
     ScriptId = ''
     ScriptType = ''
@@ -11,4 +11,4 @@ class Task:
         self.ScriptType = _ScriptType
         self.Parm = _Parm
         return
-
+    

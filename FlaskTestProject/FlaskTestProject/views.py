@@ -153,4 +153,5 @@ def get_datafile(task_id, file_id):
 
 @app.route('/api/isfinished/<string:task_id>', methods=['GET'])
 def get_isTaskFinished(task_id):
-    return True
+    taskManager = TaskManager.TaskManager()
+    return task_id
