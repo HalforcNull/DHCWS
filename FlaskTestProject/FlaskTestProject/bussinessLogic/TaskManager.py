@@ -48,3 +48,4 @@ class TaskManager(DesignPatterns.Singleton):
         fileList = filemanager.GetResults(taskId)
         return fileList 
 
+
