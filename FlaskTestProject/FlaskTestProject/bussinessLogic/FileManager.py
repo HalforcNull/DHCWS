@@ -1,5 +1,6 @@
 import os
 from FlaskTestProject import app
+from FlaskTestProject.dataEntities import Result
 
 UPLOAD_FOLDER = app.config['ENV_FILE_UPLOAD_FOLDER']
 OUTPUT_FILE_PATH = app.config['ENV_OUTPUT_FILE_PATH']
@@ -48,23 +49,44 @@ class FileManager:
                 return app.config['ENV_SCRIPTFOLDER'] + scriptFileName
         raise FileNotFoundError()
         
+    def __InitResult(self, resultFolder):
+        dlist = os.listdir(resultFolder)
+        myResult = Result.Result()
+        for item in dlist:
+            if item.startswith('title='):
+                myResult.Title = item.replace('title=', '')
+                continue
+            if item.startswith('type='):
+                myResult.Type = item.replace('type=', '')
+                continue
+            myResult.DataCount += 1
+        return myResult
     
     def GetResults(self, taskId):
+        resultList = []
         try:
-            rList = os.listdir(path=OUTPUT_FILE_PATH + taskId +'/')
-            return rList
+            resultPath = OUTPUT_FILE_PATH + taskId +'/'
+            rList = os.listdir(resultPath)
+            for item in rList:
+                try:
+                    if os.path.isdir(resultPath+item):
+                        #resultList.append(Result.Result())
+                        resultList.append(self.__InitResult(resultPath+item))
+                except Exception:
+                    continue
         except Exception:
-            return None
-    
-    def GetResultFileDirectory(self, taskId, fileId):
-        fl = self.GetResults(taskId)
-        if fl is None:
+            return [1,2,3,4,5]
+        return resultList
+
+    def GetResultFileDirectory(self, taskId, resultId, fileId):
+        fileFolderPath = OUTPUT_FILE_PATH + taskId + '/' + resultId + '/'
+        files = os.listdir(fileFolderPath)
+        for f in files:
+            if f.rsplit('.',1)[0].lower() == fileId:
+                return fileFolderPath + f
+        else:
             return None
 
-        for filename in fl:
-            if fileId in filename:
-                return OUTPUT_FILE_PATH + taskId + '/' + filename
-    
     def GetType(self, filepath):
         return filepath.rsplit('.', 1)[1].lower()
     

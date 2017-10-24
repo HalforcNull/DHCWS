@@ -1,11 +1,11 @@
 $(document).ready(function () {
     idDiv = document.getElementById('task_id');
     task_id = idDiv.value; 
-    for( lpIndex = 1; lpIndex < 4; lpIndex++)
+    for( lpIndex = 1; lpIndex < 10; lpIndex++)
     {
         mydiv = document.getElementById('result'+ '_' + lpIndex);
 
-        if( !loadPlotlyResult(task_id, lpIndex,mydiv ) )
+        if( !loadPlotlyResult(task_id, lpIndex, mydiv ) )
         { break; }
     }
     
@@ -16,24 +16,26 @@ $(document).ready(function () {
     return;
 });
 
-function loadPlotlyResult(task_id, file_id, mydiv){
+function loadPlotlyResult(task_id, result_id, mydiv){
     if(mydiv == null || mydiv == undefined)
     {
         return false;
     }
     mydiv.value = 'Data Load Error';
-
-    Plotly.d3.csv("/api/datafile/"+task_id+ "/" + file_id, function(error,data)
+    for( i = 1; i <= mydiv.getAttribute('datacount'); i++ )
     {
-        if(error) return console.warn(error);
+        file_id = i;
+        Plotly.d3.csv("/api/datafile/"+task_id+ "/" + result_id + "/" + file_id, function(error,data)
+        {
+            if(error) return console.warn(error);
 
-        xArray = data.map(function(data){return data['x']});
-        yArray = data.map(function(data){return data['y']});
-        plotData = {x:xArray, y:yArray};
-        t = [plotData];
+            xArray = data.map(function(data){return data['x']});
+            yArray = data.map(function(data){return data['y']});
+            plotData = {x:xArray, y:yArray};
+            t = [plotData];
 
-        Plotly.plot(mydiv,t);
-    });
-    
+            Plotly.plot(mydiv,t);
+        });
+    }
     return true;
 }

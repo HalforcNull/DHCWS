@@ -13,7 +13,7 @@
 {% endif %}
 
 {% for result in resultList %}
-    <div id="result_{{loop.index}}" style="width:600px;height:250px;"></div>
+    <div id="result_{{loop.index}}" datacount="{{result.DataCount}}" style="width:600px;height:250px;"></div>
 {% endfor %}
 {% if not framehidden %}
     <a href="{{htmlLink}}" target="_blank"> Your task contains an html result, click here to view it.</a>

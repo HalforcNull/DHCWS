@@ -1,6 +1,7 @@
 from FlaskTestProject.dataEntities import DataAccess
 from FlaskTestProject.bussinessLogic import FileManager
 from FlaskTestProject import DesignPatterns
+import os
 
 class TaskManager(DesignPatterns.Singleton):
     DataAccess = None
@@ -35,7 +36,8 @@ class TaskManager(DesignPatterns.Singleton):
     
     def taskContainsHtmlResult(self, taskId):
         filemanager = FileManager.FileManager()
-        fileList = filemanager.GetResults(taskId)
+        outputfolder = filemanager.GetTaskOutputFolder(taskId)
+        fileList = os.listdir(outputfolder)
         if fileList is None:
             return False
 
