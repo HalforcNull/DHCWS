@@ -37,6 +37,9 @@ class TaskManager(DesignPatterns.Singleton):
     def taskContainsHtmlResult(self, taskId):
         filemanager = FileManager.FileManager()
         outputfolder = filemanager.GetTaskOutputFolder(taskId)
+        if not os.path.exists(outputfolder):
+            return False
+        
         fileList = os.listdir(outputfolder)
         if fileList is None:
             return False

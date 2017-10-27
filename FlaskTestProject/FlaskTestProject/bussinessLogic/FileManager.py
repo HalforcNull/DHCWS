@@ -64,8 +64,12 @@ class FileManager:
     
     def GetResults(self, taskId):
         resultList = []
+        resultPath = OUTPUT_FILE_PATH + taskId +'/'
+        if not os.path.exists(resultPath):
+            return None
+
         try:
-            resultPath = OUTPUT_FILE_PATH + taskId +'/'
+        
             rList = os.listdir(resultPath)
             for item in rList:
                 try:
@@ -75,7 +79,7 @@ class FileManager:
                 except Exception:
                     continue
         except Exception:
-            return [1,2,3,4,5]
+            return None
         return resultList
 
     def GetResultFileDirectory(self, taskId, resultId, fileId):
