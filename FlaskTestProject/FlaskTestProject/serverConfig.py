@@ -12,3 +12,4 @@ class Config(object):
     ENV_OUTPUT_FILE_PATH = 'C:/DemoWorkingFolder/Outputs/'
     CONFIG_ALLOWED_EXTENSIONS = set(['csv'])
     ENV_FILE_UPLOAD_FOLDER = 'C:/DemoWorkingFolder/Inputs/'
+    ENV_FILE_PICKLE_FOLDER = ''
