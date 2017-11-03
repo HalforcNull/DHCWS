@@ -1,5 +1,5 @@
 from sklearn.naive_bayes import GaussianNB
-from FlaskTeskProject import DesignPattern.Singleton 
+from FlaskTestProject import DesignPattern.Singleton 
 import numpy as np
 import pickle
 
