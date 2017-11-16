@@ -6,11 +6,12 @@ import subprocess
 import csv
 from datetime import datetime
 
-from flask import render_template, request, send_file
+from flask import render_template, request, send_file, jsonify
 
 from FlaskTestProject import app
 from FlaskTestProject.bussinessLogic import (FileManager, ScriptManager,
-                                             TaskManager, LoadBalancer)
+                                             TaskManager, LoadBalancer,
+                                             ClassificationManager)
 
 
 #PREMADE CODES
@@ -150,3 +151,14 @@ def get_datafile(task_id, file_id):
     if fileManager.GetType(filePath) == 'html':
         return send_file(filePath, mimetype='text/html')
     return send_file(filePath, mimetype='text/csv')
+
+@app.route('/api/classification/<string:data_name>', methods=['POST'])
+def get_classification(data_name):
+    data = request.data
+    cm = ClassificationManager.ClassificationManager()
+    result = cm.matchedDataToProb(data)
+    if result is None:
+        return 'Error'
+    else:
+        return jsonify( result )
+        
