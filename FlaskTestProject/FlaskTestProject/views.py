@@ -152,11 +152,17 @@ def get_datafile(task_id, file_id):
         return send_file(filePath, mimetype='text/html')
     return send_file(filePath, mimetype='text/csv')
 
-@app.route('/api/classification/<string:data_name>', methods=['POST'])
-def get_classification(data_name):
+@app.route('/api/classification/<string:method>', methods=['POST'])
+def get_classification(method):
     data = request.data
     cm = ClassificationManager.ClassificationManager()
-    result = cm.matchedDataToProb(data)
+    if method.upper() == 'GTEX':
+        result = cm.GtexFullDataPredict(data)
+    elif method.upper() == 'GTEXSELFTEST':
+        result = cm.GtexSelfTest()
+    else:    
+        result = cm.matchedDataToProb(data)
+
     if result is None:
         return 'Error'
     else:
