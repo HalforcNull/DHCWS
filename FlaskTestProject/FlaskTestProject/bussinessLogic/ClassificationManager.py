@@ -25,7 +25,7 @@ class ClassificationManager(DesignPattern.Singleton):
         self.GtexFullDataModel = pickle.load( open( PICKLEFOLDER + 'gtex_TrainingNormalizedResult.pkl', 'rb' ) )
         if isfile(GTEXGENE):
             with open (GTEXGENE, "r") as myfile:
-                self.GtexGeneLabel=myfile.read().split('\n')
+                self.GtexGeneLabel=myfile.read().split('\r\n')
         else:
             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), GTEXGENE)
         for f in listdir(BIMODULEFOLDER):
@@ -76,7 +76,7 @@ class ClassificationManager(DesignPattern.Singleton):
       #  raise Exception(len(matchedData))
         npmatchedData = np.array([matchedData]).astype(np.float)    
         normalizedData = self.__DataNormalization(npmatchedData)
-        return [self.GtexFullDataModel.predict(normalizedData)[0], matchedData]
+        return self.GtexFullDataModel.predict(normalizedData)[0]
 
 
     """ predictWithFeq will also do normalization """
