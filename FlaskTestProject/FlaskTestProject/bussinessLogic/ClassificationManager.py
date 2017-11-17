@@ -51,7 +51,7 @@ class ClassificationManager(DesignPattern.Singleton):
         return result
         
     def __matchData(self, unmatchedData, matchMode):
-        unmatched = json.loads(unmatchedData.upper())
+        unmatched = json.loads(unmatchedData)
         matchedData = []
         matchLabel = []
         if matchMode == 'GTEX':
