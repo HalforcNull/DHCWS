@@ -15,4 +15,3 @@ class Config(object):
     ENV_FILE_PICKLE_FOLDER = 'C:/WebsiteData/Pickle/'
     ENV_FILE_BIOMODULE_FOLDER = 'C:/WebsiteData/Pickle/BioModule/'
     ENV_FILE_GTEX_GENE = 'C:/WebsiteData/Gene/GtexGene.txt'
-    
