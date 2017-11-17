@@ -3,6 +3,9 @@ from os.path import isfile, join
 from sklearn.naive_bayes import GaussianNB
 from FlaskTestProject import (DesignPattern, app)
 
+import os
+import errno
+
 import json
 import numpy as np
 import pickle
@@ -23,6 +26,8 @@ class ClassificationManager(DesignPattern.Singleton):
         if isfile(GTEXGENE):
             with open (GTEXGENE, "r") as myfile:
                 self.GtexGeneLabel=myfile.read().split('\n')
+        else:
+            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), GTEXGENE)
         for f in listdir(BIMODULEFOLDER):
             fullf = join(BIMODULEFOLDER,f)
             if isfile(fullf) and f.rsplit('.', 1)[1].lower() == 'pkl':
@@ -69,9 +74,9 @@ class ClassificationManager(DesignPattern.Singleton):
     def GtexFullDataPredict(self, datalist):
         matchedData = self.__matchData(datalist, 'GTEX')
       #  raise Exception(len(matchedData))
-        matchedData = np.array([matchedData]).astype(np.float)    
-        normalizedData = self.__DataNormalization(matchedData)
-        return self.GtexFullDataModel.predict(normalizedData)[0]
+        npmatchedData = np.array([matchedData]).astype(np.float)    
+        normalizedData = self.__DataNormalization(npmatchedData)
+        return [self.GtexFullDataModel.predict(normalizedData)[0], matchedData]
 
 
     """ predictWithFeq will also do normalization """
