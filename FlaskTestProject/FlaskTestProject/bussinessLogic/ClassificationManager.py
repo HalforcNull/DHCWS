@@ -107,7 +107,6 @@ class ClassificationManager(DesignPattern.Singleton):
             lst.append(n)
         return [lst]
 
-
     def calcProbExcludeOne(self, result):    
         mysum = 0
         keys = result.keys()
@@ -116,11 +115,9 @@ class ClassificationManager(DesignPattern.Singleton):
                 result.pop(key)
             else:
                 mysum += result[key]
-                
         keys = result.keys()
         for key in keys:
             result[key] = result[key] / mysum
-        
         return result
 
     def matchedDataToProb(self, raw):
