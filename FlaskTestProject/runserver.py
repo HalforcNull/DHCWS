@@ -12,6 +12,9 @@ username = 'root'
 password = 'root'
 database = 'dbo'
 
+
+"""this is my local server run script
+"""
 if __name__ == '__main__':
     HOST = environ.get('SERVER_HOST', 'localhost')
     try:
@@ -29,3 +32,4 @@ if __name__ == '__main__':
     conn.close()
 
     app.run(HOST, PORT)
+
