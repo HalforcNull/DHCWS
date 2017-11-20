@@ -107,8 +107,8 @@ class ClassificationManager(DesignPattern.Singleton):
             lst.append(n)
         return [lst]
 
-    def matchedDataToProb(self, matchedData):
-        matchedData = self.convertStrToList(matchedData)
+    def matchedDataToProb(self, raw):
+        matchedData = self.__matchData(raw, 'GTEX')
         if not isinstance( matchedData, np.ndarray ):
             matchedData = np.array(matchedData).astype(np.float)
         if matchedData.ndim <= 1:
