@@ -6,30 +6,26 @@ from os import environ
 from FlaskTestProject import app
 import mysql.connector
 
-#TODO: CONFIG 
-hostname = 'localhost'
-username = 'root'
-password = 'root'
-database = 'dbo'
-
 
 """this is my local server run script
 """
 if __name__ == '__main__':
-    HOST = environ.get('SERVER_HOST', 'localhost')
+    HOST = environ.get('SERVER_HOST', app.config['WEB_HOSTIP'])
     try:
-        PORT = int(environ.get('SERVER_PORT', '5555'))
+        PORT = int(environ.get('SERVER_PORT', app.config['WEB_PORT']))
     except ValueError:
-        PORT = 5555
+        PORT = app.config['WEB_BACKUPPORT']
 
-    args = ('WebServer', HOST, PORT, 'FN')
-    
-    conn = mysql.connector.connect( host=hostname, user=username, passwd=password, db=database )
-    cursor = conn.cursor()
-    cursor.callproc('spRegServer',args)
-    cursor.close()
-    conn.commit()
-    conn.close()
+    try:
+        args = ('WebServer', HOST, PORT, 'FN')    
+        conn = mysql.connector.connect( host=app.config['DB_HOSTNAME'], user=app.config['DB_USERNAME'], passwd=app.config['DB_PASSWORD'], db=app.config['DB_DATABASE'] )
+        cursor = conn.cursor()
+        cursor.callproc('spRegServer',args)
+        cursor.close()
+        conn.commit()
+        conn.close()
+    except Exception:
+        print('Error occur when register web server to DB. Web sever may lose some function.')
 
     app.run(HOST, PORT)
 

@@ -265,6 +265,5 @@ ScriptRunner/.vscode/launch.json
 
 ScriptRunner/Config.py
 
-FlaskTestProject/FlaskTestProject/serverConfig.py
 FlaskTestProject/runserver.py
-FlaskTestProject/runserver.py
+FlaskTestProject/FlaskTestProject/__init__.py
