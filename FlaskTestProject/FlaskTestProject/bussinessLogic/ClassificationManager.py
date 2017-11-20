@@ -107,13 +107,34 @@ class ClassificationManager(DesignPattern.Singleton):
             lst.append(n)
         return [lst]
 
+
+    def calcProbExcludeOne(self, result):    
+        mysum = 0
+        keys = result.keys()
+        for key in keys:
+            if result[key] == 1:
+                result.pop(key)
+            else:
+                mysum += result[key]
+                
+        keys = result.keys()
+        for key in keys:
+            result[key] = result[key] / mysum
+        
+        return result
+
     def matchedDataToProb(self, raw):
         matchedData = self.__matchData(raw, 'GTEX')
         if not isinstance( matchedData, np.ndarray ):
             matchedData = np.array(matchedData).astype(np.float)
         if matchedData.ndim <= 1:
             matchedData = [matchedData]
-        return self.predictWithFeq(matchedData)
+        result = self.predictWithFeq(matchedData)
+        return self.calcProbExcludeOne(result)
+
+        
+        
+
     
 
 
