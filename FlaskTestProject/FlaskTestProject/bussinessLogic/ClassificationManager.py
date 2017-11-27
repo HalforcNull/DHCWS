@@ -3,6 +3,9 @@ from os.path import isfile, join
 from sklearn.naive_bayes import GaussianNB
 from FlaskTestProject import (DesignPattern, app)
 
+import os
+import errno
+
 import json
 import numpy as np
 import pickle
@@ -22,7 +25,9 @@ class ClassificationManager(DesignPattern.Singleton):
         self.GtexFullDataModel = pickle.load( open( PICKLEFOLDER + 'gtex_TrainingNormalizedResult.pkl', 'rb' ) )
         if isfile(GTEXGENE):
             with open (GTEXGENE, "r") as myfile:
-                self.GtexGeneLabel=myfile.read().split('\n')
+                self.GtexGeneLabel=myfile.read().split('\r\n')
+        else:
+            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), GTEXGENE)
         for f in listdir(BIMODULEFOLDER):
             fullf = join(BIMODULEFOLDER,f)
             if isfile(fullf) and f.rsplit('.', 1)[1].lower() == 'pkl':
@@ -46,7 +51,7 @@ class ClassificationManager(DesignPattern.Singleton):
         return result
         
     def __matchData(self, unmatchedData, matchMode):
-        unmatched = json.loads(unmatchedData.upper())
+        unmatched = json.loads(unmatchedData)
         matchedData = []
         matchLabel = []
         if matchMode == 'GTEX':
@@ -69,8 +74,8 @@ class ClassificationManager(DesignPattern.Singleton):
     def GtexFullDataPredict(self, datalist):
         matchedData = self.__matchData(datalist, 'GTEX')
       #  raise Exception(len(matchedData))
-        matchedData = np.array([matchedData]).astype(np.float)    
-        normalizedData = self.__DataNormalization(matchedData)
+        npmatchedData = np.array([matchedData]).astype(np.float)    
+        normalizedData = self.__DataNormalization(npmatchedData)
         return self.GtexFullDataModel.predict(normalizedData)[0]
 
 
@@ -102,13 +107,31 @@ class ClassificationManager(DesignPattern.Singleton):
             lst.append(n)
         return [lst]
 
-    def matchedDataToProb(self, matchedData):
-        matchedData = self.convertStrToList(matchedData)
+    def calcProbExcludeOne(self, result):    
+        mysum = 0
+        keys = result.keys()
+        for key in keys:
+            if result[key] == 1:
+                result.pop(key)
+            else:
+                mysum += result[key]
+        keys = result.keys()
+        for key in keys:
+            result[key] = float(result[key]) / mysum
+        return result
+
+    def matchedDataToProb(self, raw):
+        matchedData = self.__matchData(raw, 'GTEX')
         if not isinstance( matchedData, np.ndarray ):
             matchedData = np.array(matchedData).astype(np.float)
         if matchedData.ndim <= 1:
             matchedData = [matchedData]
-        return self.predictWithFeq(matchedData)
+        result = self.predictWithFeq(matchedData)
+        return self.calcProbExcludeOne(result)
+
+        
+        
+
     
 
 
