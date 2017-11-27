@@ -22,9 +22,9 @@ class Config(object):
 
 class ConfigDevServer(object):
     DEBUG = True
-    WEB_HOST = '137.216.157.99'
-    WEB_IP = '80'
-    WEB_BACKUPIP = '5555'
+    WEB_HOSTIP = '137.216.157.99'
+    WEB_PORT = '80'
+    WEB_BACKUPPORT = '5555'
     DB_HOSTNAME = 'localhost'
     DB_USERNAME = 'root'
     DB_PASSWORD = 'root'
@@ -34,6 +34,7 @@ class ConfigDevServer(object):
     ENV_SCRIPTFOLDER = ''
     ENV_INPUT_FILE_PATH = '/home/yaor/website/WebsiteData/UploadFile/'
     ENV_OUTPUT_FILE_PATH = '/home/yaor/website/WebsiteData/DownloadFile/'
+    CONFIG_ALLOWED_EXTENSIONS = set(['csv'])
     ENV_FILE_UPLOAD_FOLDER = '/home/yaor/website/WebsiteData/UploadFile/'
     ENV_FILE_PICKLE_FOLDER = '/home/yaor/website/WebsiteData/Pickle/'
     ENV_FILE_BIOMODULE_FOLDER = '/home/yaor/website/WebsiteData/Pickle/BioModule/'

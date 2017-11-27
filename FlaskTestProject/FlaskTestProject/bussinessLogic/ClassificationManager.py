@@ -117,7 +117,7 @@ class ClassificationManager(DesignPattern.Singleton):
                 mysum += result[key]
         keys = result.keys()
         for key in keys:
-            result[key] = result[key] / mysum
+            result[key] = float(result[key]) / mysum
         return result
 
     def matchedDataToProb(self, raw):
