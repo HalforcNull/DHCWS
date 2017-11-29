@@ -150,8 +150,10 @@ class ClassificationManager(DesignPattern.Singleton):
             matchedData = np.array(matchedData).astype(np.float)
         if matchedData.ndim <= 1:
             matchedData = [matchedData]
-        result = self.predictWithFeq(matchedData)
-        return self.calcProbExcludeOne(result)
+        results = self.predictWithFeq(matchedData)
+        for k in results.keys():
+            results[k] = self.calcProbExcludeOne(results[k])
+        return results
 
         
         
