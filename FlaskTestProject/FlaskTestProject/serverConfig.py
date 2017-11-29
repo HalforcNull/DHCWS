@@ -16,7 +16,8 @@ class Config(object):
     CONFIG_ALLOWED_EXTENSIONS = set(['csv'])
     ENV_FILE_UPLOAD_FOLDER = 'C:/DemoWorkingFolder/Inputs/'
     ENV_FILE_PICKLE_FOLDER = 'C:/WebsiteData/Pickle/'
-    ENV_FILE_BIOMODULE_FOLDER = 'C:/WebsiteData/Pickle/BioModule/'
+    ENV_FILE_GTEX_MODEL_FOLDER = '/home/yaor/website/WebsiteData/Pickle/Model/gtex/'
+    ENV_FILE_TCGA_MODEL_FOLDER = '/home/yaor/website/WebsiteData/Pickle/Model/tcga/'
     ENV_FILE_GTEX_GENE = 'C:/WebsiteData/Gene/GtexGene.txt'
 
 
@@ -37,5 +38,6 @@ class ConfigDevServer(object):
     CONFIG_ALLOWED_EXTENSIONS = set(['csv'])
     ENV_FILE_UPLOAD_FOLDER = '/home/yaor/website/WebsiteData/UploadFile/'
     ENV_FILE_PICKLE_FOLDER = '/home/yaor/website/WebsiteData/Pickle/'
-    ENV_FILE_BIOMODULE_FOLDER = '/home/yaor/website/WebsiteData/Pickle/BioModule/'
+    ENV_FILE_GTEX_MODEL_FOLDER = '/home/yaor/website/WebsiteData/Pickle/Model/gtex/'
+    ENV_FILE_TCGA_MODEL_FOLDER = '/home/yaor/website/WebsiteData/Pickle/Model/tcga/'
     ENV_FILE_GTEX_GENE = '/home/yaor/website/WebsiteData/Gene/GtexGene.txt'

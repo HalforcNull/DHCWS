@@ -11,13 +11,15 @@ import numpy as np
 import pickle
 
 PICKLEFOLDER = app.config['ENV_FILE_PICKLE_FOLDER']
-BIMODULEFOLDER = app.config['ENV_FILE_BIOMODULE_FOLDER']
+GTEXMODULEFOLDER = app.config['ENV_FILE_GTEX_MODEL_FOLDER']
+TCGAMODULEFOLDER = app.config['ENV_FILE_TCGA_MODEL_FOLDER']
 GTEXGENE = app.config['ENV_FILE_GTEX_GENE']
 
 class ClassificationManager(DesignPattern.Singleton):
     GtexFullDataModel = ''
     GtexGeneLabel = []
-    BiClassificationModules = []
+    GtexClassificationModules = []
+    TcgaClassificationModules = []
 
     def __init__(self):
      #   newPkl = pickle.load(open('C:/Pickle/BioModule/_adipose_colon.pkl', 'rb'))
@@ -28,11 +30,19 @@ class ClassificationManager(DesignPattern.Singleton):
                 self.GtexGeneLabel=myfile.read().split('\r\n')
         else:
             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), GTEXGENE)
-        for f in listdir(BIMODULEFOLDER):
-            fullf = join(BIMODULEFOLDER,f)
+            
+        for f in listdir(GTEXMODULEFOLDER):
+            fullf = join(GTEXMODULEFOLDER,f)
             if isfile(fullf) and f.rsplit('.', 1)[1].lower() == 'pkl':
                 newPkl = pickle.load(open(fullf, 'rb'))
-                self.BiClassificationModules.append(newPkl)
+                self.GtexClassificationModules.append(newPkl)
+
+        for f in listdir(TCGAMODULEFOLDER):
+            fullf = join(GTEXMODULEFOLDER,f)
+            if isfile(fullf) and f.rsplit('.', 1)[1].lower() == 'pkl':
+                newPkl = pickle.load(open(fullf, 'rb'))
+                self.TcgaClassificationModules.append(newPkl)
+
 
     """ Data normalization will normalize data following :
         sum(Data) = 2^20
@@ -44,9 +54,15 @@ class ClassificationManager(DesignPattern.Singleton):
         # 2^20 = 1048576
         return np.log2(sample * 1048576/np.sum(sample))
 
-    def __RunForBiPerdiction(self, normalizedData):
+    def __RunForGtexPerdiction(self, normalizedData):
         result = []
-        for m in self.BiClassificationModules:
+        for m in self.GtexClassificationModules:
+            result.append(m.predict(normalizedData)[0])
+        return result
+    
+    def __RunForTcgaPerdiction(self, normalizedData):
+        result = []
+        for m in self.TcgaClassificationModules:
             result.append(m.predict(normalizedData)[0])
         return result
         
@@ -54,7 +70,7 @@ class ClassificationManager(DesignPattern.Singleton):
         unmatched = json.loads(unmatchedData)
         matchedData = []
         matchLabel = []
-        if matchMode == 'GTEX':
+        if matchMode == 'GTEX': #TCGA and GTEX using the same gene
             matchLabel = self.GtexGeneLabel
         else:
             # we do not have any other labels again
@@ -82,14 +98,22 @@ class ClassificationManager(DesignPattern.Singleton):
     """ predictWithFeq will also do normalization """
     def predictWithFeq(self, datalist):
         dataPred = np.apply_along_axis(self.__DataNormalization, 1, datalist)
-        prdrslt = self.__RunForBiPerdiction(dataPred)
-        result = {}
-        for r in prdrslt:
-            if r in result.keys():
-                result[r] += 1
+        gtexPdctRslt = self.__RunForGtexPerdiction(dataPred)
+        gtexresult = {}
+        for r in gtexPdctRslt:
+            if r in gtexresult.keys():
+                gtexresult[r] += 1
             else:
-                result[r] = 1
-        return result
+                gtexresult[r] = 1
+
+        tcgaPdctRslt = self.__RunForTcgaPerdiction(dataPred)
+        tcgaresult = {}
+        for r in tcgaPdctRslt:
+            if r in tcgaresult.keys():
+                tcgaresult[r] += 1
+            else:
+                tcgaresult[r] = 1
+        return {'Gtex': gtexresult, 'Tcga': tcgaresult}
     
     def convertFeqToProb(self, rlist):
         fsum = 0
