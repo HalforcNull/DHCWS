@@ -42,7 +42,7 @@ class ClassificationManager(DesignPattern.Singleton):
             if isfile(fullf) and f.rsplit('.', 1)[1].lower() == 'pkl':
                 newPkl = pickle.load(open(fullf, 'rb'))
                 self.TcgaClassificationModules.append(newPkl)
-        raise('The size of TCGA is' + len(self.TcgaClassificationModules))
+        raise('The size of TCGA is' + str( len(self.TcgaClassificationModules)))
 
     """ Data normalization will normalize data following :
         sum(Data) = 2^20
