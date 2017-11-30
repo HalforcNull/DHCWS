@@ -42,7 +42,7 @@ class ClassificationManager(DesignPattern.Singleton):
             if isfile(fullf) and f.rsplit('.', 1)[1].lower() == 'pkl':
                 newPkl = pickle.load(open(fullf, 'rb'))
                 self.TcgaClassificationModules.append(newPkl)
-
+        raise(len(self.TcgaClassificationModules))
 
     """ Data normalization will normalize data following :
         sum(Data) = 2^20
@@ -141,7 +141,7 @@ class ClassificationManager(DesignPattern.Singleton):
                 mysum += result[key]
         keys = result.keys()
         for key in keys:
-            result[key] = float(result[key]) / mysum
+            result[key] = float(result[key]) * 100 / mysum
         return result
 
     def matchedDataToProb(self, raw):
