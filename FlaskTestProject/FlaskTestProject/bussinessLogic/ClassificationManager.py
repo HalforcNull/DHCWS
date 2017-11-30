@@ -2,7 +2,6 @@ from os import listdir
 from os.path import isfile, join
 from sklearn.naive_bayes import GaussianNB
 from FlaskTestProject import (DesignPattern, app)
-from datetime.datetime import now
 
 import os
 import errno
@@ -46,7 +45,7 @@ class ClassificationManager(DesignPattern.Singleton):
                 newPkl = pickle.load(open(fullf, 'rb'))
                 self.TcgaClassificationModules.append(newPkl)
         app.logger.info( datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ': tcga classification loaded.')
-        app.logger.info( 'tcga data load time use: ' + str(now() - a) )
+        app.logger.info( 'tcga data load time use: ' + str(datetime.datetime.now() - a) )
 
     """ Data normalization will normalize data following :
         sum(Data) = 2^20
@@ -149,7 +148,7 @@ class ClassificationManager(DesignPattern.Singleton):
 
     def matchedDataToProb(self, raw):
         app.logger.info('New matchedDataToProb request come in. Timer Start.')
-        a = now()
+        a = datetime.datetime.now()
         matchedData = self.__matchData(raw, 'GTEX')
         if not isinstance( matchedData, np.ndarray ):
             matchedData = np.array(matchedData).astype(np.float)
@@ -158,7 +157,7 @@ class ClassificationManager(DesignPattern.Singleton):
         results = self.predictWithFeq(matchedData)
         for k in results.keys():
             results[k] = self.calcProbExcludeOne(results[k])
-        app.logger.info('Request done. Time consume is: ' + str(now()-a))
+        app.logger.info('Request done. Time consume is: ' + str(datetime.datetime.now()-a))
         return results
 
         
