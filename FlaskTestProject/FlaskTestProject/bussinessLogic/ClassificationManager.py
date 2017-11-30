@@ -2,10 +2,11 @@ from os import listdir
 from os.path import isfile, join
 from sklearn.naive_bayes import GaussianNB
 from FlaskTestProject import (DesignPattern, app)
+from datetime.datetime import now
 
 import os
 import errno
-
+import datetime
 import json
 import numpy as np
 import pickle
@@ -37,17 +38,19 @@ class ClassificationManager(DesignPattern.Singleton):
                 newPkl = pickle.load(open(fullf, 'rb'))
                 self.GtexClassificationModules.append(newPkl)
 
+        app.logger.info( datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ': tcga classification start loading.')
+        a = datetime.datetime.now()
         for f in listdir(TCGAMODULEFOLDER):
-            fullf = join(GTEXMODULEFOLDER,f)
+            fullf = join(TCGAMODULEFOLDER,f)
             if isfile(fullf) and f.rsplit('.', 1)[1].lower() == 'pkl':
                 newPkl = pickle.load(open(fullf, 'rb'))
                 self.TcgaClassificationModules.append(newPkl)
-        raise('The size of TCGA is' + str( len(self.TcgaClassificationModules)))
+        app.logger.info( datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ': tcga classification loaded.')
+        app.logger.info( 'tcga data load time use: ' + str(now() - a) )
 
     """ Data normalization will normalize data following :
         sum(Data) = 2^20
-        then return Log2(Data)
-        """
+        then return Log2(Data)        """
     def __DataNormalization(self, sample):
         """one sample pass in"""
         sample = sample + 100
@@ -145,6 +148,8 @@ class ClassificationManager(DesignPattern.Singleton):
         return result
 
     def matchedDataToProb(self, raw):
+        app.logger.info('New matchedDataToProb request come in. Timer Start.')
+        a = now()
         matchedData = self.__matchData(raw, 'GTEX')
         if not isinstance( matchedData, np.ndarray ):
             matchedData = np.array(matchedData).astype(np.float)
@@ -153,6 +158,7 @@ class ClassificationManager(DesignPattern.Singleton):
         results = self.predictWithFeq(matchedData)
         for k in results.keys():
             results[k] = self.calcProbExcludeOne(results[k])
+        app.logger.info('Request done. Time consume is: ' + str(now()-a))
         return results
 
         
