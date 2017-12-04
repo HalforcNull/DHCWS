@@ -128,7 +128,9 @@ class ClassificationManager():
                 result[r] = 1
         return result
     
-    def multiThreadPredict(self, datalist, module):
+    def multiThreadPredict(self, parms):
+        datalist = parms[0]
+        module = parms[1]
         dataPred = np.apply_along_axis(self.__DataNormalization, 1, datalist)
         PdctRslt = []
         for m in module:
