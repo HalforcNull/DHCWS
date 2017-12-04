@@ -13,6 +13,9 @@ from FlaskTestProject.bussinessLogic import (FileManager, ScriptManager,
                                              TaskManager, LoadBalancer,
                                              ClassificationManager)
 
+"""singleton doesnot work as expected."""
+cm = ClassificationManager.ClassificationManager()
+
 
 #PREMADE CODES
 @app.route('/')
@@ -155,7 +158,6 @@ def get_datafile(task_id, file_id):
 @app.route('/api/classification/<string:method>', methods=['POST'])
 def get_classification(method):
     data = request.data
-    cm = ClassificationManager.ClassificationManager()
     if method.upper() == 'GTEX':
         result = cm.GtexFullDataPredict(data)
     elif method.upper() == 'GTEXSELFTEST':
