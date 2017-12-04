@@ -208,7 +208,8 @@ class ClassificationManager():
         if matchedData.ndim <= 1:
             matchedData = [matchedData]
         results2 = {}
-        mappedr = self.threadPool.map(self.multiThreadPredict, [[gtexMatchedData, self.GtexClassificationModules], [gtexMatchedData, self.TcgaClassificationModules], [celllineMatchedData, self.CellLineClassificationModules]])
+        data = [[gtexMatchedData, self.GtexClassificationModules], [gtexMatchedData, self.TcgaClassificationModules], [celllineMatchedData, self.CellLineClassificationModules]]
+        mappedr = self.threadPool.map(self.multiThreadPredict, data)
         results2['GTEX'] = mappedr[0]
         results2['TCGA'] = mappedr[1]
         results2['CELLLINE'] = mappedr[2]
