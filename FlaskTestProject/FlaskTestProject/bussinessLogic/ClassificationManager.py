@@ -204,7 +204,7 @@ class ClassificationManager():
         celllineMatchedData = self.__matchData(raw, 'CELLLINE')
         if not isinstance( celllineMatchedData, np.ndarray ):
             celllineMatchedData = np.array(celllineMatchedData).astype(np.float)
-        if matchedData.ndim <= 1:
+        if celllineMatchedData.ndim <= 1:
             celllineMatchedData = [celllineMatchedData]
         results2 = {}
         data = [[gtexMatchedData, self.GtexClassificationModules], [gtexMatchedData, self.TcgaClassificationModules], [celllineMatchedData, self.CellLineClassificationModules]]
