@@ -18,7 +18,10 @@ class Config(object):
     ENV_FILE_PICKLE_FOLDER = 'C:/WebsiteData/Pickle/'
     ENV_FILE_GTEX_MODEL_FOLDER = '/home/yaor/website/WebsiteData/Pickle/Model/gtex/'
     ENV_FILE_TCGA_MODEL_FOLDER = '/home/yaor/website/WebsiteData/Pickle/Model/tcga/'
+    ENV_FILE_HUMANCELLLINE_MODEL_FOLDER = '' # add your own
     ENV_FILE_GTEX_GENE = 'C:/WebsiteData/Gene/GtexGene.txt'
+    ENV_FILE_CELLLINE_GENE = '' # add you own 
+
 
 
 class ConfigDevServer(object):
@@ -40,4 +43,6 @@ class ConfigDevServer(object):
     ENV_FILE_PICKLE_FOLDER = '/home/yaor/website/WebsiteData/Pickle/'
     ENV_FILE_GTEX_MODEL_FOLDER = '/home/yaor/website/WebsiteData/Pickle/Model/gtex/'
     ENV_FILE_TCGA_MODEL_FOLDER = '/home/yaor/website/WebsiteData/Pickle/Model/tcga/'
+    ENV_FILE_HUMANCELLLINE_MODEL_FOLDER = '/home/yaor/website/WebsiteData/Pickle/Model/human_cell_line/'
     ENV_FILE_GTEX_GENE = '/home/yaor/website/WebsiteData/Gene/GtexGene.txt'
+    ENV_FILE_CELLLINE_GENE = '/home/yaor/website/WebsiteData/Gene/CellLineGene.txt'

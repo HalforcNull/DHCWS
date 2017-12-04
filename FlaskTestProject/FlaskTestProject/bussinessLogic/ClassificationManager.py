@@ -13,13 +13,18 @@ import pickle
 PICKLEFOLDER = app.config['ENV_FILE_PICKLE_FOLDER']
 GTEXMODULEFOLDER = app.config['ENV_FILE_GTEX_MODEL_FOLDER']
 TCGAMODULEFOLDER = app.config['ENV_FILE_TCGA_MODEL_FOLDER']
+CELLLINEMODULEFOLDER = app.config['ENV_FILE_HUMANCELLLINE_MODEL_FOLDER']
 GTEXGENE = app.config['ENV_FILE_GTEX_GENE']
+CELLLINEGENE = app.config['ENV_FILE_CELLLINE_GENE']
 
 class ClassificationManager(DesignPattern.Singleton):
     GtexFullDataModel = ''
     GtexGeneLabel = []
+    CellLineGeneLabel = []
     GtexClassificationModules = []
     TcgaClassificationModules = []
+    CellLineClassificationModules = []
+    
 
     def __init__(self):
      #   newPkl = pickle.load(open('C:/Pickle/BioModule/_adipose_colon.pkl', 'rb'))
@@ -30,6 +35,12 @@ class ClassificationManager(DesignPattern.Singleton):
                 self.GtexGeneLabel=myfile.read().split('\r\n')
         else:
             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), GTEXGENE)
+
+        if isfile(CELLLINEGENE):
+            with open (GTEXGENE, "r") as myfile:
+                self.CellLineGeneLabel=myfile.read().split('\r\n')
+        else:
+            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), GTEXGENE)
             
         for f in listdir(GTEXMODULEFOLDER):
             fullf = join(GTEXMODULEFOLDER,f)
@@ -37,15 +48,21 @@ class ClassificationManager(DesignPattern.Singleton):
                 newPkl = pickle.load(open(fullf, 'rb'))
                 self.GtexClassificationModules.append(newPkl)
 
-        app.logger.info( datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ': tcga classification start loading.')
-        a = datetime.datetime.now()
         for f in listdir(TCGAMODULEFOLDER):
             fullf = join(TCGAMODULEFOLDER,f)
             if isfile(fullf) and f.rsplit('.', 1)[1].lower() == 'pkl':
                 newPkl = pickle.load(open(fullf, 'rb'))
                 self.TcgaClassificationModules.append(newPkl)
-        app.logger.info( datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ': tcga classification loaded.')
-        app.logger.info( 'tcga data load time use: ' + str(datetime.datetime.now() - a) )
+        
+        app.logger.info( datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ': cell line classification start loading.')
+        a = datetime.datetime.now()
+        for f in listdir(CELLLINEMODULEFOLDER):
+            fullf = join(CELLLINEMODULEFOLDER,f)
+            if isfile(fullf) and f.rsplit('.', 1)[1].lower() == 'pkl':
+                newPkl = pickle.load(open(fullf, 'rb'))
+                self.CellLineClassificationModules.append(newPkl)
+        app.logger.info( datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ': cell line classification loaded.')
+        app.logger.info( 'cell line data load time use: ' + str(datetime.datetime.now() - a) )
 
     """ Data normalization will normalize data following :
         sum(Data) = 2^20
@@ -55,18 +72,6 @@ class ClassificationManager(DesignPattern.Singleton):
         sample = sample + 100
         # 2^20 = 1048576
         return np.log2(sample * 1048576/np.sum(sample))
-
-    def __RunForGtexPerdiction(self, normalizedData):
-        result = []
-        for m in self.GtexClassificationModules:
-            result.append(m.predict(normalizedData)[0])
-        return result
-    
-    def __RunForTcgaPerdiction(self, normalizedData):
-        result = []
-        for m in self.TcgaClassificationModules:
-            result.append(m.predict(normalizedData)[0])
-        return result
         
     def __matchData(self, unmatchedData, matchMode):
         unmatched = json.loads(unmatchedData)
@@ -74,9 +79,11 @@ class ClassificationManager(DesignPattern.Singleton):
         matchLabel = []
         if matchMode == 'GTEX': #TCGA and GTEX using the same gene
             matchLabel = self.GtexGeneLabel
-        else:
+        elif matchMode == 'CELLLINE': # this is the second gene match mode 
             # we do not have any other labels again
-            matchLabel = self.GtexGeneLabel
+            matchLabel = self.CellLineGeneLabel
+        else:
+            matchLabel = self.GtexGeneLabel # Gtex still the default match mode
         for gene in matchLabel:
             matchedData.append(unmatched.get(gene, 0))
         return matchedData
@@ -98,24 +105,28 @@ class ClassificationManager(DesignPattern.Singleton):
 
 
     """ predictWithFeq will also do normalization """
-    def predictWithFeq(self, datalist):
+    def predictWithFeq(self, datalist, predictMode):
         dataPred = np.apply_along_axis(self.__DataNormalization, 1, datalist)
-        gtexPdctRslt = self.__RunForGtexPerdiction(dataPred)
-        gtexresult = {}
-        for r in gtexPdctRslt:
-            if r in gtexresult.keys():
-                gtexresult[r] += 1
-            else:
-                gtexresult[r] = 1
+        PdctRslt = []
+        PdctModel = None
+        if predictMode == 'TCGA':
+            PdctModel = self.TcgaClassificationModules
+        elif predictMode == 'GTEX':
+            PdctModel = self.GtexClassificationModules
+        elif predictMode == 'CELLLINE':
+            PdctModel = self.CellLineClassificationModules
+        else:
+            raise KeyError('Unknown Mode: '+predictMode)
 
-        tcgaPdctRslt = self.__RunForTcgaPerdiction(dataPred)
-        tcgaresult = {}
-        for r in tcgaPdctRslt:
-            if r in tcgaresult.keys():
-                tcgaresult[r] += 1
+        for m in PdctModel:
+            PdctRslt.append(m.predict(dataPred)[0])
+        result = {}
+        for r in PdctRslt:
+            if r in result.keys():
+                result[r] += 1
             else:
-                tcgaresult[r] = 1
-        return {'Gtex': gtexresult, 'Tcga': tcgaresult}
+                result[r] = 1
+        return result
     
     def convertFeqToProb(self, rlist):
         fsum = 0
@@ -154,7 +165,17 @@ class ClassificationManager(DesignPattern.Singleton):
             matchedData = np.array(matchedData).astype(np.float)
         if matchedData.ndim <= 1:
             matchedData = [matchedData]
-        results = self.predictWithFeq(matchedData)
+        results = {}
+        results['GTEX'] = self.predictWithFeq(matchedData, 'GTEX')
+        results['TCGA'] = self.predictWithFeq(matchedData, 'TCGA')
+
+        matchedData = self.__matchData(raw, 'CELLLINE')
+        if not isinstance( matchedData, np.ndarray ):
+            matchedData = np.array(matchedData).astype(np.float)
+        if matchedData.ndim <= 1:
+            matchedData = [matchedData]
+        results['CELLLINE'] = self.predictWithFeq(matchedData, 'CELLLINE')
+
         for k in results.keys():
             results[k] = self.calcProbExcludeOne(results[k])
         app.logger.info('Request done. Time consume is: ' + str(datetime.datetime.now()-a))
