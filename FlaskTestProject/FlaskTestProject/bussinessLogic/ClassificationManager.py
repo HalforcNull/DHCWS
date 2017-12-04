@@ -129,6 +129,7 @@ class ClassificationManager():
         return result
     
     def multiThreadPredict(self, parms):
+        app.logger.info(parms)
         datalist = parms[0]
         module = parms[1]
         dataPred = np.apply_along_axis(self.__DataNormalization, 1, datalist)
@@ -141,6 +142,7 @@ class ClassificationManager():
                 result[r] += 1
             else:
                 result[r] = 1
+        app.logger.info('done')
         return result
 
     def convertFeqToProb(self, rlist):
@@ -210,6 +212,7 @@ class ClassificationManager():
         results2 = {}
         data = [[gtexMatchedData, self.GtexClassificationModules], [gtexMatchedData, self.TcgaClassificationModules], [celllineMatchedData, self.CellLineClassificationModules]]
         mappedr = self.threadPool.map(self.multiThreadPredict, data)
+        app.logger.info(str(len(mappedr)))
         results2['GTEX'] = mappedr[0]
         results2['TCGA'] = mappedr[1]
         results2['CELLLINE'] = mappedr[2]
