@@ -86,6 +86,10 @@ class ClassificationManager():
             matchLabel = self.GtexGeneLabel # Gtex still the default match mode
         for gene in matchLabel:
             matchedData.append(unmatched.get(gene, 0))
+        if not isinstance( matchedData, np.ndarray ):
+            matchedData = np.array(matchedData).astype(np.float)
+        if matchedData.ndim <= 1:
+            matchedData = [matchedData]
         return matchedData
     
     def GtexSelfTest(self):
@@ -99,7 +103,7 @@ class ClassificationManager():
     def GtexFullDataPredict(self, datalist):
         matchedData = self.__matchData(datalist, 'GTEX')
       #  raise Exception(len(matchedData))
-        npmatchedData = np.array([matchedData]).astype(np.float)    
+        npmatchedData = np.array(matchedData).astype(np.float)    
         normalizedData = self.__DataNormalization(npmatchedData)
         return self.GtexFullDataModel.predict(normalizedData)[0]
 
@@ -141,6 +145,8 @@ class ClassificationManager():
             else:
                 result[r] = 1
         return result
+    
+    def fullMulti(self, parms):
 
     def convertFeqToProb(self, rlist):
         fsum = 0
@@ -175,10 +181,7 @@ class ClassificationManager():
         app.logger.info('New matchedDataToProb request come in. Timer Start.')
         a = datetime.datetime.now()
         matchedData = self.__matchData(raw, 'GTEX')
-        if not isinstance( matchedData, np.ndarray ):
-            matchedData = np.array(matchedData).astype(np.float)
-        if matchedData.ndim <= 1:
-            matchedData = [matchedData]
+
         app.logger.info(' Single Process - Data match GTEX. Time consume is: ' + str(datetime.datetime.now()-a))
         
         results = {}
@@ -187,10 +190,6 @@ class ClassificationManager():
 
         b = datetime.datetime.now()
         matchedData = self.__matchData(raw, 'CELLLINE')
-        if not isinstance( matchedData, np.ndarray ):
-            matchedData = np.array(matchedData).astype(np.float)
-        if matchedData.ndim <= 1:
-            matchedData = [matchedData]
         app.logger.info(' Single Process - Data match GTEX. Time consume is: ' + str(datetime.datetime.now()-b))
         results['CELLLINE'] = self.predictWithFeq(matchedData, 'CELLLINE')
 
@@ -201,15 +200,7 @@ class ClassificationManager():
         app.logger.info('New matchedDataToProb request with multi thread. Timer Start.')
         a = datetime.datetime.now()
         gtexMatchedData = self.__matchData(raw, 'GTEX')
-        if not isinstance( gtexMatchedData, np.ndarray ):
-            gtexMatchedData = np.array(gtexMatchedData).astype(np.float)
-        if gtexMatchedData.ndim <= 1:
-            gtexMatchedData = [gtexMatchedData]
         celllineMatchedData = self.__matchData(raw, 'CELLLINE')
-        if not isinstance( celllineMatchedData, np.ndarray ):
-            celllineMatchedData = np.array(celllineMatchedData).astype(np.float)
-        if celllineMatchedData.ndim <= 1:
-            celllineMatchedData = [celllineMatchedData]
         results2 = {}
         data = [[gtexMatchedData, self.GtexClassificationModules], [gtexMatchedData, self.TcgaClassificationModules], [celllineMatchedData, self.CellLineClassificationModules]]
         testmappd = self.multiThreadPredict([gtexMatchedData, self.GtexClassificationModules])
