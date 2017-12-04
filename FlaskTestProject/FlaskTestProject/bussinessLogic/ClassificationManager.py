@@ -104,7 +104,6 @@ class ClassificationManager():
         return self.GtexFullDataModel.predict(normalizedData)[0]
 
 
-    """ predictWithFeq will also do normalization """
     def predictWithFeq(self, datalist, predictMode):
         dataPred = np.apply_along_axis(self.__DataNormalization, 1, datalist)
         PdctRslt = []
@@ -129,7 +128,6 @@ class ClassificationManager():
         return result
     
     def multiThreadPredict(self, parms):
-        app.logger.info(len(parms))
         datalist = parms[0]
         module = parms[1]
         dataPred = np.apply_along_axis(self.__DataNormalization, 1, datalist)
@@ -142,7 +140,6 @@ class ClassificationManager():
                 result[r] += 1
             else:
                 result[r] = 1
-        app.logger.info('done')
         return result
 
     def convertFeqToProb(self, rlist):
@@ -200,15 +197,15 @@ class ClassificationManager():
         app.logger.info('New matchedDataToProb request with multi thread. Timer Start.')
         a = datetime.datetime.now()
         gtexMatchedData = self.__matchData(raw, 'GTEX')
-        if not isinstance( matchedData, np.ndarray ):
-            matchedData = np.array(matchedData).astype(np.float)
-        if matchedData.ndim <= 1:
-            matchedData = [matchedData]
+        if not isinstance( gtexMatchedData, np.ndarray ):
+            gtexMatchedData = np.array(gtexMatchedData).astype(np.float)
+        if gtexMatchedData.ndim <= 1:
+            gtexMatchedData = [gtexMatchedData]
         celllineMatchedData = self.__matchData(raw, 'CELLLINE')
-        if not isinstance( matchedData, np.ndarray ):
-            matchedData = np.array(matchedData).astype(np.float)
+        if not isinstance( celllineMatchedData, np.ndarray ):
+            celllineMatchedData = np.array(celllineMatchedData).astype(np.float)
         if matchedData.ndim <= 1:
-            matchedData = [matchedData]
+            celllineMatchedData = [celllineMatchedData]
         results2 = {}
         data = [[gtexMatchedData, self.GtexClassificationModules], [gtexMatchedData, self.TcgaClassificationModules], [celllineMatchedData, self.CellLineClassificationModules]]
         testmappd = self.multiThreadPredict([gtexMatchedData, self.GtexClassificationModules])
