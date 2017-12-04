@@ -109,7 +109,9 @@ class ClassificationManager():
 
 
     def predictWithFeq(self, datalist, predictMode):
+        a = datetime.datetime.now()
         dataPred = np.apply_along_axis(self.__DataNormalization, 1, datalist)
+        app.logger.info('Data normalize. Time consume is: ' + str(datetime.datetime.now()-a))
         PdctRslt = []
         PdctModel = None
         if predictMode == 'TCGA':
@@ -130,7 +132,7 @@ class ClassificationManager():
             else:
                 result[r] = 1
         return result
-    
+    """
     def multiThreadPredict(self, parms):
         datalist = parms[0]
         module = parms[1]
@@ -145,9 +147,7 @@ class ClassificationManager():
             else:
                 result[r] = 1
         return result
-    
-    def fullMulti(self, parms):
-
+    """
     def convertFeqToProb(self, rlist):
         fsum = 0
         for k in rlist.keys():
@@ -178,25 +178,25 @@ class ClassificationManager():
         return result
 
     def matchedDataToProb(self, raw):
-        app.logger.info('New matchedDataToProb request come in. Timer Start.')
-        a = datetime.datetime.now()
+#        app.logger.info('New matchedDataToProb request come in. Timer Start.')
+#        a = datetime.datetime.now()
         matchedData = self.__matchData(raw, 'GTEX')
 
-        app.logger.info(' Single Process - Data match GTEX. Time consume is: ' + str(datetime.datetime.now()-a))
+#       app.logger.info(' Single Process - Data match GTEX. Time consume is: ' + str(datetime.datetime.now()-a))
         
         results = {}
         results['GTEX'] = self.predictWithFeq(matchedData, 'GTEX')
         results['TCGA'] = self.predictWithFeq(matchedData, 'TCGA')
 
-        b = datetime.datetime.now()
+#        b = datetime.datetime.now()
         matchedData = self.__matchData(raw, 'CELLLINE')
-        app.logger.info(' Single Process - Data match GTEX. Time consume is: ' + str(datetime.datetime.now()-b))
+#        app.logger.info(' Single Process - Data match GTEX. Time consume is: ' + str(datetime.datetime.now()-b))
         results['CELLLINE'] = self.predictWithFeq(matchedData, 'CELLLINE')
 
         for k in results.keys():
             results[k] = self.calcProbExcludeOne(results[k])
-        app.logger.info(' Single Process - Request done. Time consume is: ' + str(datetime.datetime.now()-a))
-
+#        app.logger.info(' Single Process - Request done. Time consume is: ' + str(datetime.datetime.now()-a))
+"""
         app.logger.info('New matchedDataToProb request with multi thread. Timer Start.')
         a = datetime.datetime.now()
         gtexMatchedData = self.__matchData(raw, 'GTEX')
@@ -215,7 +215,8 @@ class ClassificationManager():
 
 
         return {'single': results, 'multi':results2}
-
+"""
+        return results
         
         
 
