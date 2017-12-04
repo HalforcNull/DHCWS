@@ -17,14 +17,13 @@ CELLLINEMODULEFOLDER = app.config['ENV_FILE_HUMANCELLLINE_MODEL_FOLDER']
 GTEXGENE = app.config['ENV_FILE_GTEX_GENE']
 CELLLINEGENE = app.config['ENV_FILE_CELLLINE_GENE']
 
-class ClassificationManager(DesignPattern.Singleton):
+class ClassificationManager():
     GtexFullDataModel = ''
     GtexGeneLabel = []
     CellLineGeneLabel = []
     GtexClassificationModules = []
     TcgaClassificationModules = []
     CellLineClassificationModules = []
-    
 
     def __init__(self):
      #   newPkl = pickle.load(open('C:/Pickle/BioModule/_adipose_colon.pkl', 'rb'))
@@ -54,16 +53,13 @@ class ClassificationManager(DesignPattern.Singleton):
                 newPkl = pickle.load(open(fullf, 'rb'))
                 self.TcgaClassificationModules.append(newPkl)
         
-        app.logger.info( datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ': cell line classification start loading.')
-        a = datetime.datetime.now()
         for f in listdir(CELLLINEMODULEFOLDER):
             fullf = join(CELLLINEMODULEFOLDER,f)
             if isfile(fullf) and f.rsplit('.', 1)[1].lower() == 'pkl':
                 newPkl = pickle.load(open(fullf, 'rb'))
                 self.CellLineClassificationModules.append(newPkl)
         app.logger.info( datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ': cell line classification loaded.')
-        app.logger.info( 'cell line data load time use: ' + str(datetime.datetime.now() - a) )
-
+        
     """ Data normalization will normalize data following :
         sum(Data) = 2^20
         then return Log2(Data)        """
@@ -184,9 +180,3 @@ class ClassificationManager(DesignPattern.Singleton):
         
         
 
-    
-
-
-
-
-    
