@@ -129,7 +129,7 @@ class ClassificationManager():
         return result
     
     def multiThreadPredict(self, parms):
-        app.logger.info(parms)
+        app.logger.info(len(parms))
         datalist = parms[0]
         module = parms[1]
         dataPred = np.apply_along_axis(self.__DataNormalization, 1, datalist)
@@ -211,6 +211,7 @@ class ClassificationManager():
             matchedData = [matchedData]
         results2 = {}
         data = [[gtexMatchedData, self.GtexClassificationModules], [gtexMatchedData, self.TcgaClassificationModules], [celllineMatchedData, self.CellLineClassificationModules]]
+        testmappd = self.multiThreadPredict([gtexMatchedData, self.GtexClassificationModules])
         mappedr = self.threadPool.map(self.multiThreadPredict, data)
         app.logger.info(str(len(mappedr)))
         results2['GTEX'] = mappedr[0]
