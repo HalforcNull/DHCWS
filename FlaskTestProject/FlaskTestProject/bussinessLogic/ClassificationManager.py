@@ -37,7 +37,7 @@ class ClassificationManager(DesignPattern.Singleton):
             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), GTEXGENE)
 
         if isfile(CELLLINEGENE):
-            with open (GTEXGENE, "r") as myfile:
+            with open (CELLLINEGENE, "r") as myfile:
                 self.CellLineGeneLabel=myfile.read().split('\r\n')
         else:
             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), GTEXGENE)
