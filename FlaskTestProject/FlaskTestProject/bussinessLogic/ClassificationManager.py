@@ -179,15 +179,19 @@ class ClassificationManager():
             matchedData = np.array(matchedData).astype(np.float)
         if matchedData.ndim <= 1:
             matchedData = [matchedData]
+        app.logger.info(' Single Process - Data match GTEX. Time consume is: ' + str(datetime.datetime.now()-a))
+        
         results = {}
         results['GTEX'] = self.predictWithFeq(matchedData, 'GTEX')
         results['TCGA'] = self.predictWithFeq(matchedData, 'TCGA')
 
+        b = datetime.datetime.now()
         matchedData = self.__matchData(raw, 'CELLLINE')
         if not isinstance( matchedData, np.ndarray ):
             matchedData = np.array(matchedData).astype(np.float)
         if matchedData.ndim <= 1:
             matchedData = [matchedData]
+        app.logger.info(' Single Process - Data match GTEX. Time consume is: ' + str(datetime.datetime.now()-b))
         results['CELLLINE'] = self.predictWithFeq(matchedData, 'CELLLINE')
 
         for k in results.keys():
