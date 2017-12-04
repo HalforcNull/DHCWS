@@ -1,5 +1,6 @@
 from os import listdir
 from os.path import isfile, join
+from multiprocessing.pool import ThreadPool
 from sklearn.naive_bayes import GaussianNB
 from FlaskTestProject import (DesignPattern, app)
 
@@ -16,6 +17,7 @@ TCGAMODULEFOLDER = app.config['ENV_FILE_TCGA_MODEL_FOLDER']
 CELLLINEMODULEFOLDER = app.config['ENV_FILE_HUMANCELLLINE_MODEL_FOLDER']
 GTEXGENE = app.config['ENV_FILE_GTEX_GENE']
 CELLLINEGENE = app.config['ENV_FILE_CELLLINE_GENE']
+THREADCOUNT = app.config['CONFIG_CLASSIFICATION_MODULE_THREAD_COUNT']
 
 class ClassificationManager():
     GtexFullDataModel = ''
@@ -24,10 +26,12 @@ class ClassificationManager():
     GtexClassificationModules = []
     TcgaClassificationModules = []
     CellLineClassificationModules = []
+    threadPool = None
 
     def __init__(self):
      #   newPkl = pickle.load(open('C:/Pickle/BioModule/_adipose_colon.pkl', 'rb'))
      #   self.BiClassificationModules.append(newPkl)
+        self.threadPool = ThreadPool(processes=THREADCOUNT)
         self.GtexFullDataModel = pickle.load( open( PICKLEFOLDER + 'gtex_TrainingNormalizedResult.pkl', 'rb' ) )
         if isfile(GTEXGENE):
             with open (GTEXGENE, "r") as myfile:
@@ -124,6 +128,19 @@ class ClassificationManager():
                 result[r] = 1
         return result
     
+    def multiThreadPredict(self, datalist, module):
+        dataPred = np.apply_along_axis(self.__DataNormalization, 1, datalist)
+        PdctRslt = []
+        for m in module:
+            PdctRslt.append(m.predict(dataPred)[0])
+        result = {}
+        for r in PdctRslt:
+            if r in result.keys():
+                result[r] += 1
+            else:
+                result[r] = 1
+        return result
+
     def convertFeqToProb(self, rlist):
         fsum = 0
         for k in rlist.keys():
@@ -174,8 +191,31 @@ class ClassificationManager():
 
         for k in results.keys():
             results[k] = self.calcProbExcludeOne(results[k])
-        app.logger.info('Request done. Time consume is: ' + str(datetime.datetime.now()-a))
-        return results
+        app.logger.info(' Single Process - Request done. Time consume is: ' + str(datetime.datetime.now()-a))
+
+        app.logger.info('New matchedDataToProb request with multi thread. Timer Start.')
+        a = datetime.datetime.now()
+        gtexMatchedData = self.__matchData(raw, 'GTEX')
+        if not isinstance( matchedData, np.ndarray ):
+            matchedData = np.array(matchedData).astype(np.float)
+        if matchedData.ndim <= 1:
+            matchedData = [matchedData]
+        celllineMatchedData = self.__matchData(raw, 'CELLLINE')
+        if not isinstance( matchedData, np.ndarray ):
+            matchedData = np.array(matchedData).astype(np.float)
+        if matchedData.ndim <= 1:
+            matchedData = [matchedData]
+        results2 = {}
+        mappedr = self.threadPool.map(multiThreadPredict, [(gtexMatchedData, self.GtexClassificationModules), (gtexMatchedData, self.TcgaClassificationModules), (celllineMatchedData, self.CellLineClassificationModules)])
+        results2['GTEX'] = mappedr[0]
+        results2['TCGA'] = mappedr[1]
+        results2['CELLLINE'] = mappedr[2]
+        for k in results.keys():
+            results[k] = self.calcProbExcludeOne(results[k])
+        app.logger.info(' Multi Process - Request done. Time consume is: ' + str(datetime.datetime.now()-a))
+
+
+        return {'single': results, 'multi':results2}
 
         
         

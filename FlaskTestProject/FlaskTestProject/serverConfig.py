@@ -21,6 +21,7 @@ class Config(object):
     ENV_FILE_HUMANCELLLINE_MODEL_FOLDER = '' # add your own
     ENV_FILE_GTEX_GENE = 'C:/WebsiteData/Gene/GtexGene.txt'
     ENV_FILE_CELLLINE_GENE = '' # add you own 
+    CONFIG_CLASSIFICATION_MODULE_THREAD_COUNT = 3
 
 
 
@@ -46,3 +47,5 @@ class ConfigDevServer(object):
     ENV_FILE_HUMANCELLLINE_MODEL_FOLDER = '/home/yaor/website/WebsiteData/Pickle/Model/human_cell_line/'
     ENV_FILE_GTEX_GENE = '/home/yaor/website/WebsiteData/Gene/GtexGene.txt'
     ENV_FILE_CELLLINE_GENE = '/home/yaor/website/WebsiteData/Gene/CellLineGene.txt'
+    CONFIG_CLASSIFICATION_MODULE_THREAD_COUNT = 3
+    
