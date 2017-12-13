@@ -60,7 +60,6 @@ class FileManager:
         fl = self.GetResults(taskId)
         if fl is None:
             return None
-
         for filename in fl:
             if fileId in filename:
                 return OUTPUT_FILE_PATH + taskId + '/' + filename
