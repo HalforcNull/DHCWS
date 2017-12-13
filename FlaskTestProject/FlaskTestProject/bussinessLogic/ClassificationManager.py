@@ -175,12 +175,12 @@ class ClassificationManager(DesignPattern.Singleton):
         if matchedData.ndim <= 1:
             matchedData = [matchedData]
         results['CELLLINE'] = self.predictWithFeq(matchedData, 'CELLLINE')
-
         for k in results.keys():
             results[k] = self.calcProbExcludeOne(results[k])
         app.logger.info('Request done. Time consume is: ' + str(datetime.datetime.now()-a))
         return results
-
+    
+    
         
         
 

@@ -44,7 +44,7 @@ class CorrelationManager:
             sourceData = self.GtexData[Label]
         elif DataSource == 'TCGA':
             sourceData = self.TcgaData[Label]
-        elif DataSource == 'HCELLLINE':
+        elif DataSource == 'CELLLINE':
             sourceData = self.HumanCellLineData[Label]
         else:
             raise NotImplementedError()
@@ -57,5 +57,5 @@ class CorrelationManager:
         result = {}
         result['GTEX'] = self.calcCorrelation('GTEX', Label['GTEX'], userdata)
         result['TCGA'] = self.calcCorrelation('TCGA', Label['TCGA'], userdata)
-        result['HCELLLINE'] = self.calcCorrelation('HCELLLINE', Label['HCELLLINE'], userdata)
+        result['CELLLINE'] = self.calcCorrelation('CELLLINE', Label['CELLLINE'], userdata)
         return result

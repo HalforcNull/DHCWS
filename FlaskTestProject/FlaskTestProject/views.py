@@ -159,9 +159,9 @@ def get_datafile(task_id, file_id):
 @app.route('/api/classification/<string:datasource>', methods=['POST'])
 def get_classification(datasource):
     data = request.data
-    if method.upper() == 'GTEX':
+    if datasource.upper() == 'GTEX':
         result = cm.GtexFullDataPredict(data)
-    elif method.upper() == 'GTEXSELFTEST':
+    elif datasource.upper() == 'GTEXSELFTEST':
         result = cm.GtexSelfTest()
     else:    
         result = cm.matchedDataToProb(data)
@@ -178,4 +178,22 @@ def get_correlation(datasource, label):
 
 @app.route('/api/candc/<string:datasource>', methods=['POST'])
 def get_classification_and_correlation(datasource):
-
+    data = request.data
+    matchresult = None
+    if datasource == None or datasource == '' or datasource == 'all':
+        matchresult = cm.matchedDataToProb(data)
+    correlationresult = None
+    if matchresult == None:
+        return 
+    labels = {}
+    for datasource in ['GTEX', 'TCGA', 'CELLLINE']:
+        label = None
+        count = 0
+        for l in matchresult[datasource].keys():
+            if matchresult[datasource][l] > count:
+                count = matchresult[datasource][l]
+                label = l
+        labels[datasource] = label
+    correlationresult = crm.calcCorrelationForAllDataSource(labels,data)
+    return jsonify(correlationresult)
+    
