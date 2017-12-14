@@ -21,7 +21,9 @@ class Config(object):
     ENV_FILE_HUMANCELLLINE_MODEL_FOLDER = '' # add your own
     ENV_FILE_GTEX_GENE = 'C:/WebsiteData/Gene/GtexGene.txt'
     ENV_FILE_CELLLINE_GENE = '' # add you own 
-
+    ENV_FILE_GTEX_NORMALIZED_DATA_FOLDER = '/home/yaor/website/WebsiteData/Pickle/Data/Gtex/Normalized/'
+    ENV_FILE_TCGA_NORMALIZED_DATA_FOLDER = '/home/yaor/website/WebsiteData/Pickle/Data/Tcga/Normalized/'
+    ENV_FILE_HUMAN_CELL_LINE_NORMALIZED_DATA_FOLDER = '/home/yaor/website/WebsiteData/Pickle/Data/Cellline/Normalized/'
 
 
 class ConfigDevServer(object):
@@ -46,3 +48,8 @@ class ConfigDevServer(object):
     ENV_FILE_HUMANCELLLINE_MODEL_FOLDER = '/home/yaor/website/WebsiteData/Pickle/Model/human_cell_line/'
     ENV_FILE_GTEX_GENE = '/home/yaor/website/WebsiteData/Gene/GtexGene.txt'
     ENV_FILE_CELLLINE_GENE = '/home/yaor/website/WebsiteData/Gene/CellLineGene.txt'
+    ENV_FILE_GTEX_NORMALIZED_DATA_FOLDER = '/home/yaor/website/WebsiteData/Pickle/Data/Gtex/Normalized/'
+    ENV_FILE_TCGA_NORMALIZED_DATA_FOLDER = '/home/yaor/website/WebsiteData/Pickle/Data/Tcga/Normalized/'
+    ENV_FILE_HUMAN_CELL_LINE_NORMALIZED_DATA_FOLDER = '/home/yaor/website/WebsiteData/Pickle/Data/Cellline/Normalized/'
+
+    
