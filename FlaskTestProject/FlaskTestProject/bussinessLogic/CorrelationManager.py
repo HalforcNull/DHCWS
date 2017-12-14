@@ -32,7 +32,7 @@ class CorrelationManager:
             if isfile(fullf) and f.rsplit('.', 1)[1].lower() == 'pkl':
                 newPkl = pickle.load(open(fullf, 'rb'))
                 self.HumanCellLineData[f] = newPkl
-        app.logger.info('Data loaded. Includes GTEX: ' + str(len(self.GtexData.keys()) + ' TCGA:' + str(len(self.TcgaData.keys()) + ' CellLine: ' + str(len(self.HumanCellLineData.keys())))))
+        app.logger.info('Data loaded. Includes GTEX: ' + str(len(self.GtexData.keys())) + ' TCGA:' + str(len(self.TcgaData.keys())) + ' CellLine: ' + str(len(self.HumanCellLineData.keys())))
 
     def __correlation(self, s1, s2):
         return np.corrcoef(s1,s2)[0][1]
