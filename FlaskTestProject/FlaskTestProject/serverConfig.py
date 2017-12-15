@@ -1,7 +1,6 @@
 
 class Config(object):
     DEBUG = True
-    USE_RELOADER = False
     WEB_HOSTIP = 'localhost'
     WEB_PORT = '5555'
     WEB_BACKUPPORT = '5555'
@@ -29,7 +28,6 @@ class Config(object):
 
 class ConfigDevServer(object):
     DEBUG = True
-    USE_RELOADER = False
     WEB_HOSTIP = '137.216.157.99'
     WEB_PORT = '80'
     WEB_BACKUPPORT = '5555'

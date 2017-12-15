@@ -27,5 +27,5 @@ if __name__ == '__main__':
     except Exception:
         print('Error occur when register web server to DB. Web sever may lose some function.')
 
-    app.run(HOST, PORT)
+    app.run(HOST, PORT, use_reloader=False)
 
