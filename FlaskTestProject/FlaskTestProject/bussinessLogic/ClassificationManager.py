@@ -25,7 +25,6 @@ class ClassificationManager(DesignPattern.Singleton):
     TcgaClassificationModules = []
     CellLineClassificationModules = []
     
-
     def __init__(self):
         self.GtexFullDataModel = pickle.load( open( PICKLEFOLDER + 'gtex_TrainingNormalizedResult.pkl', 'rb' ) )
         if isfile(GTEXGENE):

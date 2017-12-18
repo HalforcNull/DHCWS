@@ -182,9 +182,12 @@ def get_classification_and_correlation(datasource):
     matchresult = None
     if datasource == None or datasource == '' or datasource == 'all':
         matchresult = cm.matchedDataToProb(data)
+    app.logger.info('match is done')
     correlationresult = None
     if matchresult == None:
+        app.logger.info('None match result')
         return 
+    app.logger.info(matchresult)
     labels = {}
     for datasource in ['GTEX', 'TCGA', 'CELLLINE']:
         label = None
