@@ -16,14 +16,14 @@ class Config(object):
     CONFIG_ALLOWED_EXTENSIONS = set(['csv'])
     ENV_FILE_UPLOAD_FOLDER = 'C:/DemoWorkingFolder/Inputs/'
     ENV_FILE_PICKLE_FOLDER = 'C:/WebsiteData/Pickle/'
-    ENV_FILE_GTEX_MODEL_FOLDER = '/home/yaor/website/WebsiteData/Pickle/Model/gtex/'
-    ENV_FILE_TCGA_MODEL_FOLDER = '/home/yaor/website/WebsiteData/Pickle/Model/tcga/'
-    ENV_FILE_HUMANCELLLINE_MODEL_FOLDER = '' # add your own
+    ENV_FILE_GTEX_MODEL_FOLDER = 'C:/WebsiteData/Pickle/Model/gtex/'
+    ENV_FILE_TCGA_MODEL_FOLDER = 'C:/WebsiteData/Pickle/Model/tcga/'
+    ENV_FILE_HUMANCELLLINE_MODEL_FOLDER = 'C:/WebsiteData/Pickle/Model/human_cell_line/' # add your own
     ENV_FILE_GTEX_GENE = 'C:/WebsiteData/Gene/GtexGene.txt'
-    ENV_FILE_CELLLINE_GENE = '' # add you own 
-    ENV_FILE_GTEX_NORMALIZED_DATA_FOLDER = '/home/yaor/website/WebsiteData/Pickle/Data/Gtex/Normalized/'
-    ENV_FILE_TCGA_NORMALIZED_DATA_FOLDER = '/home/yaor/website/WebsiteData/Pickle/Data/Tcga/Normalized/'
-    ENV_FILE_HUMAN_CELL_LINE_NORMALIZED_DATA_FOLDER = '/home/yaor/website/WebsiteData/Pickle/Data/Cellline/Normalized/'
+    ENV_FILE_CELLLINE_GENE = 'C:/WebsiteData/Gene/CellLineGene.txt' # add you own 
+    ENV_FILE_GTEX_NORMALIZED_DATA_FOLDER = 'C:/WebsiteData/Pickle/Data/Gtex/Normalized/'
+    ENV_FILE_TCGA_NORMALIZED_DATA_FOLDER = 'C:/WebsiteData/Pickle/Data/Tcga/Normalized/'
+    ENV_FILE_HUMAN_CELL_LINE_NORMALIZED_DATA_FOLDER = 'C:/WebsiteData/Pickle/Data/Cellline/Normalized/'
 
 
 class ConfigDevServer(object):

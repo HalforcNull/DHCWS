@@ -27,20 +27,18 @@ class ClassificationManager(DesignPattern.Singleton):
     
 
     def __init__(self):
-     #   newPkl = pickle.load(open('C:/Pickle/BioModule/_adipose_colon.pkl', 'rb'))
-     #   self.BiClassificationModules.append(newPkl)
         self.GtexFullDataModel = pickle.load( open( PICKLEFOLDER + 'gtex_TrainingNormalizedResult.pkl', 'rb' ) )
         if isfile(GTEXGENE):
             with open (GTEXGENE, "r") as myfile:
                 self.GtexGeneLabel=myfile.read().split('\r\n')
         else:
-            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), GTEXGENE)
+            app.logger.info('GTEXGENE file is not found')
 
         if isfile(CELLLINEGENE):
             with open (CELLLINEGENE, "r") as myfile:
                 self.CellLineGeneLabel=myfile.read().split('\r\n')
         else:
-            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), GTEXGENE)
+            app.logger.info('CELL Line is not found')
             
         for f in listdir(GTEXMODULEFOLDER):
             fullf = join(GTEXMODULEFOLDER,f)
