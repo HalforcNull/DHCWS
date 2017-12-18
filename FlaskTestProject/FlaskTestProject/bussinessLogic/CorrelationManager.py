@@ -105,9 +105,7 @@ class CorrelationManager:
     
     def calcCorrelationForAllDataSource(self, Label, userdata):
         result = {}
-        result['GTEX'] = self.calcCorrelation('GTEX', Label['GTEX'], userdata)
-        result['TCGA'] = self.calcCorrelation('TCGA', Label['TCGA'], userdata)
-        result['GTEX'] = sorted(result['GTEX'], reverse=True)
-        result['TCGA'] = sorted(result['TCGA'], reverse=True)
+        result['GTEX.' + Label['GTEX']] = self.calcCorrelation('GTEX', Label['GTEX'], userdata)
+        result['TCGA.' + Label['TCGA']] = self.calcCorrelation('TCGA', Label['TCGA'], userdata)
         #result['CELLLINE'] = self.calcCorrelation('CELLLINE', Label['CELLLINE'], userdata)
         return result
