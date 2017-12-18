@@ -74,6 +74,15 @@ class CorrelationManager:
             matchedData.append(unmatched.get(gene, 0))
         return matchedData
 
+    """ Data normalization will normalize data following :
+        sum(Data) = 2^20
+        then return Log2(Data)        """
+    def __DataNormalization(self, sample):
+        """one sample pass in"""
+        sample = sample + 100
+        # 2^20 = 1048576
+        return np.log2(sample * 1048576/np.sum(sample))
+
     def calcCorrelation(self, DataSource, Label, userdata):
         DataSource = DataSource.upper()
         sourceData = None
@@ -87,15 +96,18 @@ class CorrelationManager:
             raise NotImplementedError()
         result = []
         for s in sourceData:
-            matchedData = self.__matchData(userdata, DataSource)
+            matchedData = self.__matchData(userdata, DataSource) 
             if not isinstance( matchedData, np.ndarray ):
                 matchedData = np.array(matchedData).astype(np.float)
-            result.append(self.__correlation(s, matchedData))
+            normalizedData = self.__DataNormalization(matchedData)
+            result.append(self.__correlation(s, normalizedData))
         return result
     
     def calcCorrelationForAllDataSource(self, Label, userdata):
         result = {}
         result['GTEX'] = self.calcCorrelation('GTEX', Label['GTEX'], userdata)
         result['TCGA'] = self.calcCorrelation('TCGA', Label['TCGA'], userdata)
+        result['GTEX'] = sorted(result['GTEX'], reverse=True)
+        result['TCGA'] = sorted(result['TCGA'], reverse=True)
         #result['CELLLINE'] = self.calcCorrelation('CELLLINE', Label['CELLLINE'], userdata)
         return result
