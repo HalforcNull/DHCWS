@@ -105,7 +105,13 @@ class CorrelationManager:
     
     def calcCorrelationForAllDataSource(self, Label, userdata):
         result = {}
-        result['GTEX.' + Label['GTEX']] = self.calcCorrelation('GTEX', Label['GTEX'], userdata)
-        result['TCGA.' + Label['TCGA']] = self.calcCorrelation('TCGA', Label['TCGA'], userdata)
+        gtexResult = self.calcCorrelation('GTEX', Label['GTEX'], userdata)
+        tcgaResult = self.calcCorrelation('TCGA', Label['TCGA'], userdata)
+        result['GTEX'] = gtexResult
+        result['TCGA'] = tcgaResult
+        gtexSortedIndex = np.argsort(gtexResult)
+        tcgaSortedIndex = np.argsort(tcgaResult)
+        result['GTEX_Label_' + Label['GTEX']] = [gtexSortedIndex[0], gtexSortedIndex[1], gtexSortedIndex[2]]
+        result['TCGA_Label_' + Label['TCGA']] = [tcgaSortedIndex[0], tcgaSortedIndex[1], tcgaSortedIndex[2]]
         #result['CELLLINE'] = self.calcCorrelation('CELLLINE', Label['CELLLINE'], userdata)
         return result
