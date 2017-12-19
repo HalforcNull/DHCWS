@@ -111,7 +111,7 @@ class CorrelationManager:
         result['TCGA'] = tcgaResult
         gtexSortedIndex = np.argsort(gtexResult)
         tcgaSortedIndex = np.argsort(tcgaResult)
-        result['GTEX_Label_' + Label['GTEX']] = [gtexSortedIndex[0], gtexSortedIndex[1], gtexSortedIndex[2]]
-        result['TCGA_Label_' + Label['TCGA']] = [tcgaSortedIndex[0], tcgaSortedIndex[1], tcgaSortedIndex[2]]
+        result['GTEX_Label_' + Label['GTEX']] = [gtexSortedIndex[-1], gtexSortedIndex[-2], gtexSortedIndex[-3]]
+        result['TCGA_Label_' + Label['TCGA']] = [tcgaSortedIndex[-1], tcgaSortedIndex[-2], tcgaSortedIndex[-3]]
         #result['CELLLINE'] = self.calcCorrelation('CELLLINE', Label['CELLLINE'], userdata)
         return result
