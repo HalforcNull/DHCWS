@@ -11,10 +11,11 @@ from flask import render_template, request, send_file, jsonify
 from FlaskTestProject import app
 from FlaskTestProject.bussinessLogic import (FileManager, ScriptManager,
                                              TaskManager, LoadBalancer,
-                                             ClassificationManager)
+                                             ClassificationManager, CorrelationManager)
 
 """singleton doesnot work as expected."""
 cm = ClassificationManager.ClassificationManager()
+crm = CorrelationManager.CorrelationManager()
 
 
 #PREMADE CODES
@@ -155,12 +156,12 @@ def get_datafile(task_id, file_id):
         return send_file(filePath, mimetype='text/html')
     return send_file(filePath, mimetype='text/csv')
 
-@app.route('/api/classification/<string:method>', methods=['POST'])
-def get_classification(method):
+@app.route('/api/classification/<string:datasource>', methods=['POST'])
+def get_classification(datasource):
     data = request.data
-    if method.upper() == 'GTEX':
+    if datasource.upper() == 'GTEX':
         result = cm.GtexFullDataPredict(data)
-    elif method.upper() == 'GTEXSELFTEST':
+    elif datasource.upper() == 'GTEXSELFTEST':
         result = cm.GtexSelfTest()
     else:    
         result = cm.matchedDataToProb(data)
@@ -170,3 +171,30 @@ def get_classification(method):
     else:
         return jsonify( result )
         
+@app.route('/api/correlation/<string:datasource>/<string:label>', methods=['POST'])
+def get_correlation(datasource, label):
+    data = request.data
+    return jsonify(crm.calcCorrelation(datasource, label, data))
+
+@app.route('/api/candc/<string:datasource>', methods=['POST'])
+def get_classification_and_correlation(datasource):
+    data = request.data
+    matchresult = None
+    if datasource == None or datasource == '' or datasource == 'all':
+        matchresult = cm.matchedDataToProb(data)
+    correlationresult = None
+    if matchresult == None:
+        app.logger.info('None match result')
+        return 
+    labels = {}
+    for datasource in ['GTEX', 'TCGA', 'CELLLINE']:
+        label = None
+        count = 0
+        for l in matchresult[datasource].keys():
+            if matchresult[datasource][l] > count:
+                count = matchresult[datasource][l]
+                label = l
+        labels[datasource] = label
+    correlationresult = crm.calcCorrelationForAllDataSource(labels,data)
+    return jsonify(correlationresult)
+    
